@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1099481257088",
+    "firebase_url": "https://dontsleepmanager.firebaseio.com",
+    "project_id": "dontsleepmanager",
+    "storage_bucket": "dontsleepmanager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099481257088:android:879cde0fade3ee9e",
+        "android_client_info": {
+          "package_name": "com.stanlytango.android.dontsleepmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1099481257088-2i6kkh4opped4vh553vqqmda4v9nj8t9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stanlytango.android.dontsleepmanager",
+            "certificate_hash": "03575d6bf50fa1c0f473a8e309b2152d9934b574"
+          }
+        },
+        {
+          "client_id": "1099481257088-utkj41va77kf4kccr6ii4ofsv7rqg4po.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW4gyv1yGeamFcWbNJt4GdpRedeEFeYRI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1099481257088-utkj41va77kf4kccr6ii4ofsv7rqg4po.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
