@@ -65,13 +65,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         mAuth = FirebaseAuth.getInstance();
 
-        signInBtn = (SignInButton) findViewById(R.id.sign_in_button);
-        signInBtn.setOnClickListener(this);
-
-        signOutBtn = (Button)findViewById(R.id.sign_out_button);
-        signOutBtn.setOnClickListener(this);
-
-        mTextView = (TextView) findViewById(R.id.text_view);
+    //  Views' initialization and linking with listeners *********************************
+        signInBtn = (SignInButton) findViewById(R.id.sign_in_button);           //********
+        signInBtn.setOnClickListener(this);                                     //********
+                                                                                //********
+        signOutBtn = (Button)findViewById(R.id.sign_out_button);                //********
+        signOutBtn.setOnClickListener(this);                                    //********
+                                                                                //********
+        mTextView = (TextView) findViewById(R.id.text_view);                    //********
+    // ***********************************************************************************
     }
 
     @Override
@@ -99,11 +101,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getDisplayName());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -181,10 +180,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-
-
-
 }
+
+
 //    public void handleSignInResult(GoogleSignInResult result){
 //        if(result.isSuccess()){
 //            Log.d(TAG, "handleSignInResult: "+ result.isSuccess());
