@@ -1,5 +1,8 @@
 package com.stanlytango.android.dontsleepmanager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -43,10 +46,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onSaveInstanceState(bundle);
     }
 
+    /**  *****************************************************************************
+     * Checks whether the device currently has a network connection.
+     * @return true if the device has a network connection, false otherwise.
+     */
+    private boolean isDeviceOnline() {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         // Configure Google sign-in to request the user's ID, email address,
         // and basic profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -74,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                                                 //********
         mTextView = (TextView) findViewById(R.id.text_view);                    //********
     // ***********************************************************************************
+
     }
 
     @Override
@@ -144,24 +161,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void updateUI(FirebaseUser user){
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
 
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
+        if (! isDeviceOnline()) {
+                            // here must be multilanguage string resource
+            mTextView.setText("No network connection available.");
+        }   else
+                if (user != null) {
+                    // Name, email address, and profile photo Url
+                    String name = user.getDisplayName();
+                    String email = user.getEmail();
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
-            mTextView.setText("Current user's name is "+ user.getDisplayName()+"\n" +
-                    "email "+ email+"\n" +
-                    "email verified "+ emailVerified);
-        } else {
-            mTextView.setText("NULL");
-        }
+                    // Check if user's email is verified
+                    boolean emailVerified = user.isEmailVerified();
+
+                    // The user's ID, unique to the Firebase project. Do NOT use this value to
+                    // authenticate with your backend server, if you have one. Use
+                    // FirebaseUser.getToken() instead.
+                    String uid = user.getUid();
+                    mTextView.setText("Current user's name is "+ user.getDisplayName()+"\n" +
+                            "email "+ email+"\n" +
+                            "email verified "+ emailVerified);
+                } else {
+                    mTextView.setText("NULL");
+                }
 
     }
 

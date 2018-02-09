@@ -69,19 +69,6 @@ public class ActivityGmailAuth extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gmail_auth);
 
-
-//        LinearLayout activityLayout = new LinearLayout(this);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.MATCH_PARENT);
-//        activityLayout.setLayoutParams(lp);
-//        activityLayout.setOrientation(LinearLayout.VERTICAL);
-//        activityLayout.setPadding(16, 16, 16, 16);
-//
-//        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-
         mCallApiButton = (Button) findViewById(R.id.api_button);
         mOutputText = (TextView) findViewById(R.id.output_tv);
         mCallApiButton.setText(BUTTON_TEXT);
@@ -94,21 +81,15 @@ public class ActivityGmailAuth extends BaseActivity
                 mCallApiButton.setEnabled(true);
             }
         });
-    //    activityLayout.addView(mCallApiButton);
 
-    //    mOutputText = new TextView(this);
-    //    mOutputText.setLayoutParams(tlp);
         mOutputText.setPadding(16, 16, 16, 16);
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
         mOutputText.setText(
                 "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
-    //    activityLayout.addView(mOutputText);
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Gmail API ...");
-
-    //    setContentView(activityLayout);
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
@@ -116,12 +97,19 @@ public class ActivityGmailAuth extends BaseActivity
                 .setBackOff(new ExponentialBackOff());
     }
 
-    /**
+
+    /** ************************************************************************
      * Attempt to call the API, after verifying that all the preconditions are
      * satisfied. The preconditions are: Google Play Services installed, an
      * account was selected and the device currently has online access. If any
      * of the preconditions are not satisfied, the app will prompt the user as
      * appropriate.
+     *
+     * Попытка вызвать API, после проверки того, что все предварительные
+     * условия выполнены. А именно: установлены службы Google Play,
+     * выбрана учетная запись, и устройство имеет доступ в Интернет.
+     * Если какое-либо из предварительных условий не выполняется, приложение
+     * подскажет пользователю по мере необходимости.
      */
     private void getResultsFromApi() {
         if (! isGooglePlayServicesAvailable()) {
@@ -135,7 +123,8 @@ public class ActivityGmailAuth extends BaseActivity
         }
     }
 
-    /**
+
+    /**  **************************************************************************
      * Attempts to set the account used with the API credentials. If an account
      * name was previously saved it will use that one; otherwise an account
      * picker dialog will be shown to the user. Note that the setting the
@@ -144,6 +133,15 @@ public class ActivityGmailAuth extends BaseActivity
      * present. The AfterPermissionGranted annotation indicates that this
      * function will be rerun automatically whenever the GET_ACCOUNTS permission
      * is granted.
+     *
+     * Попытка установить учетную запись, используемую с учетными данными API.
+     * Если имя учетной записи было ранее сохранено, оно будет использовать ее;
+     * в противном случае пользователю будет показан диалог выбора учетной записи.
+     * Обратите внимание, что для настройки учетной записи, используемой для объекта
+     * учетных данных, требуется, чтобы приложение имело разрешение GET_ACCOUNTS,
+     * которое запрашивается здесь, если оно еще не присутствует.
+     * Аннотации AfterPermissionGranted показывают, что эта функция будет повторно
+     * запущена автоматически при предоставлении разрешения GET_ACCOUNTS.
      */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
@@ -158,6 +156,7 @@ public class ActivityGmailAuth extends BaseActivity
                 startActivityForResult(
                         mCredential.newChooseAccountIntent(),
                         REQUEST_ACCOUNT_PICKER);
+
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -169,7 +168,8 @@ public class ActivityGmailAuth extends BaseActivity
         }
     }
 
-    /**
+
+    /** *************************************************************************
      * Called when an activity launched here (specifically, AccountPicker
      * and authorization) exits, giving you the requestCode you started it with,
      * the resultCode it returned, and any additional data from it.
@@ -178,6 +178,10 @@ public class ActivityGmailAuth extends BaseActivity
      *     activity result.
      * @param data Intent (containing result data) returned by incoming
      *     activity result.
+     *
+     * Вызывается, когда действие, запущенное здесь (в частности, AccountPicker
+     * и авторизация) завершается, предоставляя вам код запроса, с которого вы
+     * его начали, возвращаемый resultCode и любые дополнительные данные из него.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -216,7 +220,8 @@ public class ActivityGmailAuth extends BaseActivity
         }
     }
 
-    /**
+
+    /** ****************************************************************************
      * Respond to requests for permissions at runtime for API 23 and above.
      * @param requestCode The request code passed in
      *     requestPermissions(android.app.Activity, String, int, String[])
@@ -233,7 +238,8 @@ public class ActivityGmailAuth extends BaseActivity
                 requestCode, permissions, grantResults, this);
     }
 
-    /**
+
+    /** ****************************************************************************
      * Callback for when a permission is granted using the EasyPermissions library.
      * @param requestCode The request code associated with the requested permission
      * @param list The requested permission list. Never null.
@@ -243,7 +249,8 @@ public class ActivityGmailAuth extends BaseActivity
         // Do nothing.
     }
 
-    /**
+
+    /** ******************************************************************************
      * Callback for when a permission is denied using the EasyPermissions
      * library.
      * @param requestCode The request code associated with the requested
@@ -255,7 +262,8 @@ public class ActivityGmailAuth extends BaseActivity
         // Do nothing.
     }
 
-    /**
+
+    /**  *****************************************************************************
      * Checks whether the device currently has a network connection.
      * @return true if the device has a network connection, false otherwise.
      */
@@ -266,7 +274,8 @@ public class ActivityGmailAuth extends BaseActivity
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    /**
+
+    /** ****************************************************************************
      * Check that Google Play services APK is installed and up to date.
      * @return true if Google Play Services is available and up to
      *     date on this device; false otherwise.
@@ -278,28 +287,35 @@ public class ActivityGmailAuth extends BaseActivity
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
 
-    /**
+
+    /** ***********************************************************************************
      * Attempt to resolve a missing, out-of-date, invalid or disabled Google
      * Play Services installation via a user dialog, if possible.
+     *
+     * Попытка устранить отсутствующую, устаревшую, недействительную или
+     * отключенный Google Play Services через пользовательский диалог.
      */
     private void acquireGooglePlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        final int connectionStatusCode =
-                apiAvailability.isGooglePlayServicesAvailable(this);
+        final int connectionStatusCode = apiAvailability.isGooglePlayServicesAvailable(this);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
             showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
     }
 
 
-    /**
+    /** ****************************************************************************
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
      * @param connectionStatusCode code describing the presence (or lack of)
      *     Google Play Services on this device.
+     *
+     * Отображает диалоговое окно с ошибкой, показывающее, что сервис Google Play
+     * отсутствует или устарел
+     * *@param connectionStatusCode код, описывающий наличие (или отсутствие)
+     *     Google Play Служб на этом устройстве
      */
-    void showGooglePlayServicesAvailabilityErrorDialog(
-            final int connectionStatusCode) {
+    void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
                 ActivityGmailAuth.this,
@@ -308,9 +324,14 @@ public class ActivityGmailAuth extends BaseActivity
         dialog.show();
     }
 
-    /**
+
+    /** *******************************************************************************
      * An asynchronous task that handles the Gmail API call.
      * Placing the API calls in their own task ensures the UI stays responsive.
+     *
+     * Асинхронная задача, которая обрабатывает вызов API Gmail. Размещает вызовов API
+     * в их собственной задаче гарантирует, что пользовательский интерфейс останется
+     * отзывчивым.
      */
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.gmail.Gmail mService = null;
@@ -364,6 +385,7 @@ public class ActivityGmailAuth extends BaseActivity
             mProgress.show();
         }
 
+
         @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
@@ -374,6 +396,7 @@ public class ActivityGmailAuth extends BaseActivity
                 mOutputText.setText(TextUtils.join("\n", output));
             }
         }
+
 
         @Override
         protected void onCancelled() {
