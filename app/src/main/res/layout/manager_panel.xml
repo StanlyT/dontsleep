@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl1"
+    android:background="#002045"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/btn_account_manager"
+            android:layout_gravity="top"
+            android:text="@string/btn_ttl_accounts_manager"
+            android:drawableRight="@drawable/ic_manager_account"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#FFFFFF"
+            android:background="#00479b"
+            android:padding="30dp"/>
+
+
+        <Button
+            android:id="@+id/btn_account_sett"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_toRightOf="@+id/btn_account_manager"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#00479b"
+            android:drawableRight="@drawable/ic_settings"
+            android:padding="30dp"
+            android:text="@string/btn_ttl_accounts_sett"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line2"
+        android:layout_below="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/btn_rep_res"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_below="@+id/btn_account_manager"
+            android:text="@string/btn_ttl_report_results"
+            android:drawableRight="@drawable/ic_reports"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#FFFFFF"
+            android:background="#00479b"
+            android:padding="30dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_toRightOf="@id/btn_rep_res"
+            android:id="@+id/btn_pass_changing"
+            android:layout_below="@+id/btn_account_sett"
+            android:text="@string/btn_ttl_pass_changing"
+            android:drawableRight="@drawable/ic_pass_changing"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#FFFFFF"
+            android:background="#00479b"
+            android:padding="30dp"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,3 +1,64 @@
 <resources>
     <string name="app_name">DontSleepManager</string>
+    <string name="layout_register">Welcome, Administrator. \n Please create Your login</string>
+    <string name="create_password">Please create Your password and remember it</string>
+    <string name="title_sign_in_login">Login</string>
+    <string name="title_sign_in_password">Password</string>
+    <string name="title_question">Control question if You loose Your password. \n Enter some question that you know the answer to</string>
+    <string name="tv_start_shift">What time does your shift start today?</string>
+    <string name="tv_start_shift_entered">Your shift starts in 23:00,\nTODAY 19 of OCTOBER </string>
+    <string name="tv_end_shift">When does your shift finish?</string>
+    <string name="tv_end_shift_entered">Your shift STARTS TODAY on 19 of OCTOBER, in 23:00 \n and FINISHES in 23:00,TOMORROW 20 of OCTOBER   </string>
+
+    <string name="hint_enter_password"> Еnter Your password</string>
+    <string name="hint_enter_new_pass"> Еnter Your new password</string>
+    <string name="hint_enter_login"> Еnter Your login</string>
+    <string name="hint_reenter_password"> password again</string>
+    <string name="hint_reenter_new_pass">new password again</string>
+    <string name="hint_question">Question </string>
+    <string name="hint_answer">Answer</string>
+
+    <string name="btn_title_reg">REGISTER</string>
+    <string name="btn_title_update_pass">UPDATE PASSWORD</string>
+    <string name="btn_title_next">NEXT</string>
+    <string name="btn_ttl_start_monitoring">START MONITORING</string>
+    <string name="btn_title_back">BACK</string>
+    <string name="btn_title_login">LOG IN</string>
+
+    <string name="btn_ttl_accounts_manager">MANAGE\n GUARDS\' \nACCOUNTS</string>
+    <string name="btn_ttl_accounts_sett">SIGNAL REQUESTS\nTIME DURATION\nETC</string>
+    <string name="btn_ttl_report_results">RESULT\n REPORTS</string>
+    <string name="btn_ttl_pass_changing">PASSWORD\'S\n CHANGING</string>
+    <string name="btn_ttl_save">SAVE</string>
+    <string name="btn_ttl_unite_db">UNITE ALL CURRENT DATAS \n WITH CLOUD DATA BASE</string>
+    <string name="btn_ttl_send_report">SEND REPORT</string>
+
+    <string name="add_new_guard">ADD NEW GUARD</string>
+    <string name="delete">DELETE</string>
+    <string name="quit">QUIT</string>
+
+    <string name="ttl_time_delay_ans">Time to answer\n During this time the guard must to react on application\'s request in a form of blinking screen.He has to touch the screen during this time</string>
+    <string name="ttl_quants_reqs">Requests quantity\n Set the number of checks.</string>
+    <string name="ttl_sound_signal">Sound signal\n Switch on the signal in case of absence of guard\'s response</string>
+    <string name="ttl_pause">Pause\n Pause the application in case the guard temporarily has to leave the security checkpoint</string>
+    <string name="ttl_blocking">Blocking\n If this option is switched on then the button HOME and BACK will be blocked</string>
+
+    <string name="tv_minutes">minutes</string>
+    <string name="tv_max_pause">not more than</string>
+    <string name="tv_every">every</string>
+
+
+    <string name="tv_descr_time_delay_answer">Time to answer\n
+        During this time the guard must to response on application\'s request in a form of blinking screen.He has to touch the screen during this time</string>
+    <string name="tv_descr_req_freq">REQUESTS FREQUENCY\n Set the number of checks per hour.</string>
+    <string name="tv_descr_sound_signal">SOUND SIGNAL\n Switch on/off the signal in case of absence of guard\'s response</string>
+    <string name="tv_descr_pause">PAUSE\n Pause the application in case the guard temporarily has to leave the security checkpoint</string>
+    <string name="tv_descr_blocking">BLOCKING\n If this option is switched on then the button HOME and BACK will be blocked</string>
+
+    <string-array name="sett_list_temprorarily">
+        <item>Time to answer\n During this time the guard must to react on application\'s request in a form of blinking screen.He has to touch the screen during this time</item>
+        <item>Requests quantity\n Set the number of checks.</item>
+        <item>Pause\n Pause the application in case the guard temporarily has to leave the security checkpoint</item>
+        <item>Blocking\n If this option is switched on then the button HOME and BACK will be blocked</item>
+    </string-array>
 </resources>

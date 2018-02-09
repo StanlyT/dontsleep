@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     SignInButton signInBtn;
     Button signOutBtn;
     TextView mTextView;
-//    private GoogleApiClient mGoogleApiClient;
     private GoogleSignInAccount acct;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
