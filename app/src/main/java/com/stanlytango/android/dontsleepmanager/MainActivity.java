@@ -109,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-                // ...
+                Log.w(TAG, "onActivityResult: Google sign in failed "+getLocalClassName(), e);
             }
         }
     }
