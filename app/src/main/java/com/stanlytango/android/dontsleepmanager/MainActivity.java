@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
+    private Intent intent;
 
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
@@ -126,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            intent = ActivityGmailAuth
+                                        .newIntent(MainActivity.this,
+                                                   ActivityGmailAuth.class,
+                                                   true);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
