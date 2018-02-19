@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                                                 //********
         signOutBtn = (Button)findViewById(R.id.sign_out_button);                //********
         signOutBtn.setOnClickListener(this);                                    //********
-                                                                                //********
+                                                                               //********
         mTextView = (TextView) findViewById(R.id.text_view);                    //********
     // ***********************************************************************************
 
@@ -113,6 +113,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+
+    public void signOut(){
+        FirebaseAuth.getInstance().signOut();
+        FirebaseUser user = mAuth.getCurrentUser();
+        updateUI(user);
     }
 
     @Override
@@ -164,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         if (! isDeviceOnline()) {
                             // here must be multilanguage string resource
-            mTextView.setText("No network connection available.");
+            mTextView.setText("No network connection available./n Please check your Internet Connection!");
         }   else
                 if (user != null) {
                     // Name, email address, and profile photo Url
@@ -191,12 +198,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed: "+ connectionResult );
-    }
-
-    public void signOut(){
-        FirebaseAuth.getInstance().signOut();
-        FirebaseUser user = mAuth.getCurrentUser();
-        updateUI(user);
     }
 
     @Override

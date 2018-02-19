@@ -1,21 +1,16 @@
 package com.stanlytango.android.dontsleepmanager;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
-
 import com.google.api.services.gmail.GmailScopes;
-
 import com.google.api.services.gmail.model.*;
-
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -35,12 +30,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -329,9 +322,8 @@ public class ActivityGmailAuth extends BaseActivity
      * An asynchronous task that handles the Gmail API call.
      * Placing the API calls in their own task ensures the UI stays responsive.
      *
-     * Асинхронная задача, которая обрабатывает вызов API Gmail. Размещает вызовов API
-     * в их собственной задаче гарантирует, что пользовательский интерфейс останется
-     * отзывчивым.
+     * Асинхронная задача, которая обрабатывает вызов API Gmail. Размещение вызовова API
+     * в их собственной задаче гарантирует, что UI останется отзывчивым.
      */
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.gmail.Gmail mService = null;
@@ -340,8 +332,7 @@ public class ActivityGmailAuth extends BaseActivity
         MakeRequestTask(GoogleAccountCredential credential) {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            mService = new com.google.api.services.gmail.Gmail.Builder(
-                    transport, jsonFactory, credential)
+            mService = new com.google.api.services.gmail.Gmail.Builder(transport, jsonFactory, credential)
                     .setApplicationName("Gmail API Android Quickstart")
                     .build();
         }
@@ -385,7 +376,6 @@ public class ActivityGmailAuth extends BaseActivity
             mProgress.show();
         }
 
-
         @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
@@ -397,7 +387,7 @@ public class ActivityGmailAuth extends BaseActivity
             }
         }
 
-
+        // Обрабатываем разные исключения соответствующим уведомлением
         @Override
         protected void onCancelled() {
             mProgress.hide();
