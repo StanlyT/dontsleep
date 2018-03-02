@@ -9,6 +9,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.*;
 import android.Manifest;
@@ -25,6 +26,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,6 +45,8 @@ public class ActivityGmailAuth extends BaseActivity
     private TextView mOutputText;
     private Button mCallApiButton;
     ProgressDialog mProgress;
+    private static final String TAG = "#";
+    Gmail.Users.Messages msgs;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -85,9 +89,9 @@ public class ActivityGmailAuth extends BaseActivity
         mProgress.setMessage("Calling Gmail API ...");
 
         // Initialize credentials and service object.
-        mCredential = GoogleAccountCredential.usingOAuth2(
-                getApplicationContext(), Arrays.asList(SCOPES))
-                .setBackOff(new ExponentialBackOff());
+        mCredential = GoogleAccountCredential
+                              .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
+                              .setBackOff(new ExponentialBackOff());
     }
 
 
@@ -285,7 +289,7 @@ public class ActivityGmailAuth extends BaseActivity
      * Attempt to resolve a missing, out-of-date, invalid or disabled Google
      * Play Services installation via a user dialog, if possible.
      *
-     * Попытка устранить отсутствующую, устаревшую, недействительную или
+     * Попытка устранить отсутствующий, устаревший, недействительный или
      * отключенный Google Play Services через пользовательский диалог.
      */
     private void acquireGooglePlayServices() {
@@ -318,13 +322,13 @@ public class ActivityGmailAuth extends BaseActivity
     }
 
 
-    /** *******************************************************************************
-     * An asynchronous task that handles the Gmail API call.
-     * Placing the API calls in their own task ensures the UI stays responsive.
-     *
-     * Асинхронная задача, которая обрабатывает вызов API Gmail. Размещение вызовова API
-     * в их собственной задаче гарантирует, что UI останется отзывчивым.
-     */
+/** *******************************************************************************
+* An asynchronous task that handles the Gmail API call.
+* Placing the API calls in their own task ensures the UI stays responsive.
+*
+* Асинхронная задача, которая обрабатывает вызов API Gmail. Размещение вызовова API
+* в их собственной задаче гарантирует, что UI останется отзывчивым.
+*/
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.gmail.Gmail mService = null;
         private Exception mLastError = null;
@@ -342,8 +346,16 @@ public class ActivityGmailAuth extends BaseActivity
          * @param params no parameters needed for this task.
          */
         @Override
+        protected void onPreExecute() {
+            mOutputText.setText("");
+            mProgress.show();
+        }
+
+        @Override
         protected List<String> doInBackground(Void... params) {
             try {
+                // получаем папки из user'a, конвертим их
+                // в строковый список и ретёрним оброатно
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
@@ -360,7 +372,7 @@ public class ActivityGmailAuth extends BaseActivity
         private List<String> getDataFromApi() throws IOException {
             // Get the labels in the user's account.
             String user = "me";
-            List<String> labels = new ArrayList<String>();
+            List<String> labels = new ArrayList<>();
             ListLabelsResponse listResponse =
                     mService.users().labels().list(user).execute();
             for (Label label : listResponse.getLabels()) {
@@ -371,12 +383,6 @@ public class ActivityGmailAuth extends BaseActivity
 
 
         @Override
-        protected void onPreExecute() {
-            mOutputText.setText("");
-            mProgress.show();
-        }
-
-        @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
             if (output == null || output.size() == 0) {
@@ -384,6 +390,7 @@ public class ActivityGmailAuth extends BaseActivity
             } else {
                 output.add(0, "Data retrieved using the Gmail API:");
                 mOutputText.setText(TextUtils.join("\n", output));
+                Log.d(TAG, TextUtils.join("\n", output));
             }
         }
 
