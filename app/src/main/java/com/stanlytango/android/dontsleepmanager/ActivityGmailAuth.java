@@ -21,26 +21,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.os.*;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class ActivityGmailAuth extends BaseActivity
-                               implements EasyPermissions.PermissionCallbacks {
+        implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     private Button mCallApiButton;
@@ -55,7 +57,18 @@ public class ActivityGmailAuth extends BaseActivity
 
     private static final String BUTTON_TEXT = "Call Gmail API";
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { GmailScopes.GMAIL_LABELS };
+    private static final String[] SCOPES = { GmailScopes.GMAIL_LABELS,
+                                             GmailScopes.GMAIL_READONLY,
+                                             GmailScopes.MAIL_GOOGLE_COM,
+                                             GmailScopes.GMAIL_MODIFY
+                                           //  GmailScopes.GMAIL_METADATA
+    };
+
+  //  private static final Set<String> SCOPES = GmailScopes.all();
+
+
+//    private static final Collection<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email;https://www.googleapis.com/auth/gmail.modify".split(";"));
+
 
     /**
      * Create the ActivityGmailAuth activity.
@@ -90,8 +103,8 @@ public class ActivityGmailAuth extends BaseActivity
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential
-                              .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
-                              .setBackOff(new ExponentialBackOff());
+                .usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
+                .setBackOff(new ExponentialBackOff());
     }
 
 
@@ -322,14 +335,14 @@ public class ActivityGmailAuth extends BaseActivity
     }
 
 
-/** *******************************************************************************
-* An asynchronous task that handles the Gmail API call.
-* Placing the API calls in their own task ensures the UI stays responsive.
-*
-* Асинхронная задача, которая обрабатывает вызов API Gmail. Размещение вызовова API
-* в их собственной задаче гарантирует, что UI останется отзывчивым.
-*/
-    private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
+    /** *******************************************************************************
+     * An asynchronous task that handles the Gmail API call.
+     * Placing the API calls in their own task ensures the UI stays responsive.
+     *
+     * Асинхронная задача, которая обрабатывает вызов API Gmail. Размещение вызовова API
+     * в их собственной задаче гарантирует, что UI останется отзывчивым.
+     */
+    private class MakeRequestTask extends AsyncTask<Void, Void, List<com.google.api.services.gmail.model.Message>> {
         private com.google.api.services.gmail.Gmail mService = null;
         private Exception mLastError = null;
 
@@ -352,11 +365,11 @@ public class ActivityGmailAuth extends BaseActivity
         }
 
         @Override
-        protected List<String> doInBackground(Void... params) {
+        protected List<com.google.api.services.gmail.model.Message> doInBackground(Void... params) {
             try {
                 // получаем папки из user'a, конвертим их
                 // в строковый список и ретёрним оброатно
-                return getDataFromApi();
+                return getMessagesList();
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
@@ -365,32 +378,72 @@ public class ActivityGmailAuth extends BaseActivity
         }
 
         /**
-         * Fetch a list of Gmail labels attached to the specified account.
-         * @return List of Strings labels.
+         * List all Messages of the user's mailbox matching the query.
+         * @param mService Authorized Gmail API instance.
+         * @param user User's email address. The special value "me"
+         * can be used to indicate the authenticated user.
+         * @param query String used to filter the Messages listed.
+         * @param labelIds Only return Messages with these labelIds applied.
          * @throws IOException
          */
-        private List<String> getDataFromApi() throws IOException {
-            // Get the labels in the user's account.
+        private List<com.google.api.services.gmail.model.Message> getMessagesList() throws IOException {
             String user = "me";
-            List<String> labels = new ArrayList<>();
-            ListLabelsResponse listResponse =
+            String query = "from:g00gle.tango@gmail.com is:unread";
+
+            ListLabelsResponse listLabelsResponse =
                     mService.users().labels().list(user).execute();
-            for (Label label : listResponse.getLabels()) {
-                labels.add(label.getName());
+            List<String> labelIds = new ArrayList<>();
+            labelIds = Arrays.asList("INBOX");
+
+            ListMessagesResponse listMessagesResponse = mService.users().messages()
+                                                        .list(user)
+                                                        //.setLabelIds(labelIds)
+                                                        .setQ(query)
+                                                        .execute();
+
+            List<com.google.api.services.gmail.model.Message> messages = new ArrayList<>();
+
+            while(listMessagesResponse.getMessages() != null){
+                messages.addAll(listMessagesResponse.getMessages());
+                if(listMessagesResponse.getNextPageToken() != null){
+                    String pageToken = listMessagesResponse.getNextPageToken();
+
+                    listMessagesResponse = mService.users().messages()
+                                            .list(user)
+                                           // .setLabelIds(labelIds)
+                                            .setQ(query)
+                                            .setPageToken(pageToken)
+                                            .execute();
+
+                } else {
+                    break;
+                }
             }
-            return labels;
+
+            for (com.google.api.services.gmail.model.Message message : messages)
+                Log.d(TAG, message.toPrettyString());
+
+            return messages;
         }
 
 
         @Override
-        protected void onPostExecute(List<String> output) {
+        protected void onPostExecute(List<com.google.api.services.gmail.model.Message> output) {
             mProgress.hide();
             if (output == null || output.size() == 0) {
                 mOutputText.setText("No results returned.");
             } else {
-                output.add(0, "Data retrieved using the Gmail API:");
-                mOutputText.setText(TextUtils.join("\n", output));
-                Log.d(TAG, TextUtils.join("\n", output));
+                //try {
+                    Toast.makeText(getApplicationContext(),
+                            "List<Message> size = "+ output.size(),Toast.LENGTH_LONG).show();
+                    int i = 0;
+                    for (com.google.api.services.gmail.model.Message message : output){
+                        Log.d(TAG, " # "+i++);
+                        Log.d(TAG, ""+message.getSnippet());
+                    }
+
+                //} catch (IOException e) {e.printStackTrace();}
+
             }
         }
 
@@ -408,6 +461,7 @@ public class ActivityGmailAuth extends BaseActivity
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             ActivityGmailAuth.REQUEST_AUTHORIZATION);
                 } else {
+                    Log.e(TAG, "The following error occurred:\n"+mLastError.getMessage());
                     mOutputText.setText("The following error occurred:\n"
                             + mLastError.getMessage());
                 }
