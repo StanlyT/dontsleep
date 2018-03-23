@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                                                                 //********
         signOutBtn = (Button)findViewById(R.id.sign_out_button);                //********
         signOutBtn.setOnClickListener(this);                                    //********
-                                                                               //********
+                                                                                //********
         mTextView = (TextView) findViewById(R.id.text_view);                    //********
     // ***********************************************************************************
 

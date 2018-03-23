@@ -388,7 +388,7 @@ public class ActivityGmailAuth extends BaseActivity
          */
         private List<com.google.api.services.gmail.model.Message> getMessagesList() throws IOException {
             String user = "me";
-            String query = "from:g00gle.tango@gmail.com is:unread";
+            String query = "from:55555.gold@gmail.com is:unread";
 
             ListLabelsResponse listLabelsResponse =
                     mService.users().labels().list(user).execute();
@@ -421,7 +421,7 @@ public class ActivityGmailAuth extends BaseActivity
             }
 
             for (com.google.api.services.gmail.model.Message message : messages)
-                Log.d(TAG, message.toPrettyString());
+                Log.d(TAG, message.toPrettyString()+"");
 
             return messages;
         }
