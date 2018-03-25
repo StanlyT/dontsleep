@@ -7,73 +7,94 @@
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     android:gravity="top|center">
-
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center">
         <Button
-            android:layout_width="match_parent"
+            style="@style/MainButtonStyleLand"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/btn_account_manager"
             android:text="@string/btn_ttl_accounts_manager"
             android:drawableRight="@drawable/ic_manager"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:textColor="@color/colorWhite"
             android:background="@drawable/mainbuttonstyle"
             android:padding="20dp"/>
 
 
         <Button
+            style="@style/MainButtonStyleLand"
             android:id="@+id/btn_account_sett"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/mainbuttonstyle"
             android:drawableRight="@drawable/ic_action_name"
             android:padding="20dp"
             android:text="@string/btn_ttl_secured_zone"
             android:textColor="@color/colorWhite"
             />
-
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line2"
+        android:layout_below="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Button
+            style="@style/MainButtonStyleLand"
             android:id="@+id/btn_rep_res"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/btn_ttl_report_results"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:textColor="#FFFFFF"
             android:drawableRight="@drawable/ic_settings"
             android:background="@drawable/mainbuttonstyle"
             android:padding="20dp"/>
 
         <Button
-            android:layout_width="match_parent"
+            style="@style/MainButtonStyleLand"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/btn_pass_changing"
             android:text="@string/btn_ttl_report_results"
             android:drawableRight="@drawable/ic_reports"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:textColor="#FFFFFF"
             android:background="@drawable/mainbuttonstyle"
             android:padding="20dp"/>
+    </LinearLayout>
     <Button
+        style="@style/MainButtonStyleLand"
         android:id="@+id/update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_ttl_update"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:textColor="#FFFFFF"
         android:background="@drawable/buttonstylewhiteboard"
         android:padding="20dp"/>

@@ -61,7 +61,6 @@ public class ActivityGmailAuth extends BaseActivity
                                              GmailScopes.GMAIL_READONLY,
                                              GmailScopes.MAIL_GOOGLE_COM,
                                              GmailScopes.GMAIL_MODIFY
-                                           //  GmailScopes.GMAIL_METADATA
     };
 
   //  private static final Set<String> SCOPES = GmailScopes.all();
@@ -368,7 +367,7 @@ public class ActivityGmailAuth extends BaseActivity
         protected List<com.google.api.services.gmail.model.Message> doInBackground(Void... params) {
             try {
                 // получаем папки из user'a, конвертим их
-                // в строковый список и ретёрним оброатно
+                // в строковый список и ретёрним обратно
                 return getMessagesList();
             } catch (Exception e) {
                 mLastError = e;
@@ -414,7 +413,6 @@ public class ActivityGmailAuth extends BaseActivity
                                             .setQ(query)
                                             .setPageToken(pageToken)
                                             .execute();
-
                 } else {
                     break;
                 }

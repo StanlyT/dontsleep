@@ -25,10 +25,11 @@
     <string name="btn_title_back">BACK</string>
     <string name="btn_title_login">LOG IN</string>
 
-    <string name="btn_ttl_accounts_manager">MANAGE\n GUARDS\' \nACCOUNTS</string>
-    <string name="btn_ttl_accounts_sett">SIGNAL REQUESTS\nTIME DURATION\nETC</string>
-    <string name="btn_ttl_report_results">RESULT\n REPORTS</string>
-    <string name="btn_ttl_pass_changing">PASSWORD\'S\n CHANGING</string>
+    <string name="btn_ttl_accounts_manager">SENTINELS</string>
+    <string name="btn_ttl_accounts_sett">DEFAULT ZONE'S SETTINGS</string>
+    <string name="btn_ttl_report_results">REPORTS</string>
+    <string name="btn_ttl_secured_zone">SECURED ZONES</string>
+    <string name="btn_ttl_update">START DATA EXCHANGE</string>
     <string name="btn_ttl_save">SAVE</string>
     <string name="btn_ttl_unite_db">UNITE ALL CURRENT DATAS \n WITH CLOUD DATA BASE</string>
     <string name="btn_ttl_send_report">SEND REPORT</string>
