@@ -76,11 +76,10 @@ public class ActivityGmailAuth extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gmail_auth);
+        setContentView(R.layout.manager_panel);
 
         mCallApiButton = (Button) findViewById(R.id.api_button);
         mOutputText = (TextView) findViewById(R.id.output_tv);
-        mCallApiButton.setText(BUTTON_TEXT);
         mCallApiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

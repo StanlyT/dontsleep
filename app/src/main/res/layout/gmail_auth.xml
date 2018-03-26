@@ -8,24 +8,5 @@ android:padding="16dp"
 android:background="#353535"
 android:orientation="vertical"
 >
-<Button
-    android:id="@+id/api_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="top"
-    android:layout_margin="10dp"
-    android:background="#494949"
-    android:text="Call Gmail API"
-    android:textColor="#FFFFFF"/>
 
-<TextView
-   android:id="@+id/output_tv"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   android:layout_gravity="top"
-   android:layout_marginTop="15dp"
-   android:background="#3f3f3f"
-   android:padding="10dp"
-   android:textColor="#FFFFFF"
-   android:textColorHint="#999999"/>
 </LinearLayout>
