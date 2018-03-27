@@ -20,10 +20,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityGmailAuth">
+            android:name=".ActMainGmailAuth">
         </activity>
         <activity
-            android:name=".ActivityManagerMainPanel">
+            android:name=".Z_EX_main_activity_for_deleting">
         </activity>
     </application>
 

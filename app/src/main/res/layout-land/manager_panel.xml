@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/btn_account_manager"
+            android:id="@+id/btn_sentinels"
             android:text="@string/btn_ttl_accounts_manager"
             android:drawableRight="@drawable/ic_manager"
             android:layout_marginTop="20dp"
@@ -88,7 +88,7 @@
             android:padding="20dp"/>
     </LinearLayout>
     <Button
-        android:id="@+id/api_button"
+        android:id="@+id/btn_start_exchange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_ttl_update"

@@ -13,6 +13,7 @@ public class SecuredZone {
         this.name = name;
         this.settingID = settingID;
     }
+
     public Map<String, Object> toMap (){
         Map<String,Object> result = new HashMap<>();
         result.put("gmailogin",gmailogin);
@@ -25,13 +26,20 @@ public class SecuredZone {
         String key = dbRef.child(gmailogin).getKey();
         SecuredZone securedZone = new SecuredZone(gmailogin, name, settingID);
         Map <String, Object> valueMap = securedZone.toMap();
-        Map <String, Object> nodeMap = new HashMap<>();
-        nodeMap.put(key, valueMap);
-        dbRef.updateChildren(nodeMap);
+        Map <String, Object> structure = new HashMap<>();
+        structure.put(key, valueMap);
+        dbRef.updateChildren(structure);
+    }
+
+    public void letsSayThereIsSecuredZoneDB(DatabaseReference dbSecuredZoneRef){
+        writeNewSecuredZone(dbSecuredZoneRef, "zone_Alfa", "GroceryStore 79", "settingsDefault");
+        writeNewSecuredZone(dbSecuredZoneRef, "zone_Betta", "WallMarket side A", "settingsDefault");
+        writeNewSecuredZone(dbSecuredZoneRef, "zone_Gamma", "CarParking 185 Avenue", "settingsDefault");
+        writeNewSecuredZone(dbSecuredZoneRef, "zone_Omega", "NASA Zone Z", "settingsDefault");
+        writeNewSecuredZone(dbSecuredZoneRef, "zone_Sigma", "Medicine Drugs Storage", "settingsDefault");
     }
 
     public boolean containsLogin (DatabaseReference dbRef, String gmailogin){
-
         return true;
     }
 }

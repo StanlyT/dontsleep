@@ -11,7 +11,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_account_manager"
+            android:id="@+id/btn_sentinels"
             android:text="@string/btn_ttl_accounts_manager"
             android:drawableRight="@drawable/ic_manager"
             android:layout_marginTop="20dp"
@@ -24,7 +24,7 @@
 
 
         <Button
-            android:id="@+id/btn_account_sett"
+            android:id="@+id/btn_sec_zone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -40,10 +40,10 @@
             />
 
         <Button
-            android:id="@+id/btn_rep_res"
+            android:id="@+id/btn_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_ttl_report_results"
+            android:text="@string/btn_ttl_accounts_sett"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
@@ -54,9 +54,9 @@
             android:padding="20dp"/>
 
         <Button
+            android:id="@+id/btn_reports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_pass_changing"
             android:text="@string/btn_ttl_report_results"
             android:drawableRight="@drawable/ic_reports"
             android:layout_marginTop="10dp"
@@ -67,7 +67,7 @@
             android:background="@drawable/mainbuttonstyle"
             android:padding="20dp"/>
     <Button
-        android:id="@+id/api_button"
+        android:id="@+id/btn_start_exchange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_ttl_update"

@@ -12,6 +12,15 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+import com.stanlytango.android.dontsleepmanager.databasestructure.SecuredZone;
+import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
+
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -31,23 +40,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class ActivityGmailAuth extends BaseActivity
+public class ActMainGmailAuth extends BaseActivity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
+
     private TextView mOutputText;
-    private Button mCallApiButton;
+
+    private Button mButtonSentinels;
+    private Button mButtonSecuredZones;
+    private Button mButtonSettings;
+    private Button mButtonReports;
+    private Button mButtonStartExchange;
+
     ProgressDialog mProgress;
+
     private static final String TAG = "#";
+
     Gmail.Users.Messages msgs;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -70,7 +87,7 @@ public class ActivityGmailAuth extends BaseActivity
 
 
     /**
-     * Create the ActivityGmailAuth activity.
+     * Create the ActMainGmailAuth activity.
      * @param savedInstanceState previously saved instance data.
      */
     @Override
@@ -78,23 +95,74 @@ public class ActivityGmailAuth extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manager_panel);
 
-        mCallApiButton = (Button) findViewById(R.id.api_button);
         mOutputText = (TextView) findViewById(R.id.output_tv);
-        mCallApiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallApiButton.setEnabled(false);
-                mOutputText.setText("");
-                getResultsFromApi();
-                mCallApiButton.setEnabled(true);
-            }
-        });
-
         mOutputText.setPadding(16, 16, 16, 16);
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
         mOutputText.setText(
                 "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
+
+        mButtonStartExchange = (Button) findViewById(R.id.btn_start_exchange);
+        mButtonStartExchange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+        // получаем результат API из почтового ящика
+                mButtonStartExchange.setEnabled(false);
+                mOutputText.setText("");
+                getResultsFromApi(); // !!!!!!!!!!!!!!!!!!!!!!!!
+                mButtonStartExchange.setEnabled(true);
+        // =====================================================
+
+        // #BC3 проверяем не пуста ли БД =================================================
+                // получаем  ссылку на базу данных
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference dbSecuredZoneRef = firebaseDatabase.getReference("secured_zones");
+                SecuredZone securedZone = new SecuredZone();
+
+                DatabaseReference dbSentinelRef = firebaseDatabase.getReference("sentinel");
+                Sentinel sentinel = new Sentinel();
+
+
+                // допустим у нас есть база данных SecuredZone и Sentinel
+                securedZone.letsSayThereIsSecuredZoneDB(dbSecuredZoneRef);
+                sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
+
+                               //разовая проверка БД методом
+                              // addListenerForSingleValueEvent
+                dbSecuredZoneRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>(){};
+                        Map<String, Object> map = (HashMap<String, Object>)dataSnapshot.getValue(t);
+
+
+                        if (map == null)
+                            Toast.makeText(getApplicationContext(),
+                                    "NULL База данных ПУСТА ",Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(getApplicationContext(),
+                                    ""+map.size(),Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+        // #BC3 проверили не пуста ли БД =================================================
+
+        mButtonSecuredZones = (Button) findViewById(R.id.btn_sec_zone);
+        mButtonSecuredZones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+
+
+
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Gmail API ...");
@@ -326,7 +394,7 @@ public class ActivityGmailAuth extends BaseActivity
     void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
-                ActivityGmailAuth.this,
+                ActMainGmailAuth.this,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
@@ -456,7 +524,7 @@ public class ActivityGmailAuth extends BaseActivity
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            ActivityGmailAuth.REQUEST_AUTHORIZATION);
+                            ActMainGmailAuth.REQUEST_AUTHORIZATION);
                 } else {
                     Log.e(TAG, "The following error occurred:\n"+mLastError.getMessage());
                     mOutputText.setText("The following error occurred:\n"

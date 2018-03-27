@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class ActivityManagerMainPanel extends BaseActivity implements View.OnClickListener{
+public class Z_EX_main_activity_for_deleting extends BaseActivity implements View.OnClickListener{
     public Button btn_accounts_manager, btn_account_sett, btn_report_results, btn_pass_changing;
     public Intent intent;
 
@@ -13,7 +13,7 @@ public class ActivityManagerMainPanel extends BaseActivity implements View.OnCli
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.manager_panel);
-        btn_accounts_manager = (Button)findViewById(R.id.btn_account_manager);
+        btn_accounts_manager = (Button)findViewById(R.id.btn_sentinels);
         btn_account_sett  = (Button)findViewById(R.id.btn_account_sett);
         btn_report_results = (Button)findViewById(R.id.btn_rep_res);
         btn_pass_changing  = (Button)findViewById(R.id.btn_pass_changing);
