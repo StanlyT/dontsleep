@@ -58,7 +58,7 @@ public class ActMainGmailAuth extends BaseActivity
     private Button mButtonSentinels;
     private Button mButtonSecuredZones;
     private Button mButtonSettings;
-    private Button mButtonReports;
+    private Button mButtonReport;
     private Button mButtonStartExchange;
 
     ProgressDialog mProgress;
@@ -79,6 +79,9 @@ public class ActMainGmailAuth extends BaseActivity
                                              GmailScopes.MAIL_GOOGLE_COM,
                                              GmailScopes.GMAIL_MODIFY
     };
+
+    private final String DBSecuredZoneName = "securedzone";
+    private final String DBSentintelName = "sentinel";
 
   //  private static final Set<String> SCOPES = GmailScopes.all();
 
@@ -116,20 +119,13 @@ public class ActMainGmailAuth extends BaseActivity
         // #BC3 проверяем не пуста ли БД =================================================
                 // получаем  ссылку на базу данных
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference dbSecuredZoneRef = firebaseDatabase.getReference("secured_zones");
-                SecuredZone securedZone = new SecuredZone();
-
-                DatabaseReference dbSentinelRef = firebaseDatabase.getReference("sentinel");
-                Sentinel sentinel = new Sentinel();
-
-
-                // допустим у нас есть база данных SecuredZone и Sentinel
-                securedZone.letsSayThereIsSecuredZoneDB(dbSecuredZoneRef);
-                sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
-
-                               //разовая проверка БД методом
-                              // addListenerForSingleValueEvent
-                dbSecuredZoneRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                DatabaseReference dbRef = firebaseDatabase.getReference();
+                if (dbRef == null){
+                    Log.d(TAG, "dbRef = NULL");
+                }
+                    //разовая проверка БД методом
+                   // addListenerForSingleValueEvent
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>(){};
@@ -139,9 +135,17 @@ public class ActMainGmailAuth extends BaseActivity
                         if (map == null)
                             Toast.makeText(getApplicationContext(),
                                     "NULL База данных ПУСТА ",Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(getApplicationContext(),
-                                    ""+map.size(),Toast.LENGTH_LONG).show();
+                        if (map.size() == 1){
+                            if (map.containsKey(DBSecuredZoneName)){
+                                Toast.makeText(getApplicationContext(),
+                                        DBSentintelName+" is empty",Toast.LENGTH_LONG).show();
+                            } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            DBSecuredZoneName+" is empty",Toast.LENGTH_LONG).show();
+                                }
+                            } else
+                               Toast.makeText(getApplicationContext(),
+                                ""+map.size(),Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -157,8 +161,37 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonSecuredZones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference dbSecuredZoneRef = firebaseDatabase.getReference(DBSecuredZoneName);
+                SecuredZone securedZone = new SecuredZone();
+                // допустим у нас есть база данных SecuredZone
+                securedZone.letsSayThereIsSecuredZoneDB(dbSecuredZoneRef);
+
             }
         });
+
+
+        mButtonSentinels = (Button) findViewById(R.id.btn_sentinels);
+        mButtonSentinels.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference dbSentinelRef = firebaseDatabase.getReference(DBSentintelName);
+                Sentinel sentinel = new Sentinel();
+                // допустим у нас есть база данных Sentinel
+                sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
+
+            }
+        });
+
+        mButtonReport = (Button) findViewById(R.id.btn_report);
+        mButtonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
 
 
