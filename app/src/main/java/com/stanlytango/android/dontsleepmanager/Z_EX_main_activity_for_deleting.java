@@ -13,15 +13,6 @@ public class Z_EX_main_activity_for_deleting extends BaseActivity implements Vie
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.manager_panel);
-        btn_accounts_manager = (Button)findViewById(R.id.btn_sentinels);
-        btn_account_sett  = (Button)findViewById(R.id.btn_account_sett);
-        btn_report_results = (Button)findViewById(R.id.btn_rep_res);
-        btn_pass_changing  = (Button)findViewById(R.id.btn_pass_changing);
-
-        btn_accounts_manager.setOnClickListener(this);
-        btn_account_sett.setOnClickListener(this);
-        btn_report_results.setOnClickListener(this);
-        btn_pass_changing.setOnClickListener(this);
     }
 
     @Override

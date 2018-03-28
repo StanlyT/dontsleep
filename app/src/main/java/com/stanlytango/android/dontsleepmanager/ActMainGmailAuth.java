@@ -177,12 +177,10 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonSecuredZones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference dbSecuredZoneRef = firebaseDatabase.getReference(DBSecuredZoneName);
+                DatabaseReference dbSecuredZoneRef = FirebaseDatabase.getInstance().getReference(DBSecuredZoneName);
                 SecuredZone securedZone = new SecuredZone();
                 // допустим у нас есть база данных SecuredZone
                 securedZone.letsSayThereIsSecuredZoneDB(dbSecuredZoneRef);
-
             }
         });
 
@@ -191,8 +189,7 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonSentinels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference dbSentinelRef = firebaseDatabase.getReference(DBSentintelName);
+                DatabaseReference dbSentinelRef = FirebaseDatabase.getInstance().getReference(DBSentintelName);
                 Sentinel sentinel = new Sentinel();
                 // допустим у нас есть база данных Sentinel
                 sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
@@ -203,6 +200,15 @@ public class ActMainGmailAuth extends BaseActivity
         // кнопка создать Отчет
         mButtonReport = (Button) findViewById(R.id.btn_report);
         mButtonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        // кнопка создать Отчет
+        mButtonSettings = (Button) findViewById(R.id.btn_settings);
+        mButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

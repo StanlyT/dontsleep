@@ -15,11 +15,11 @@
         android:gravity="center"
         android:layout_gravity="center">
         <Button
+            android:id="@+id/btn_sentinels"
             style="@style/MainButtonStyleLand"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/btn_sentinels"
             android:text="@string/btn_ttl_accounts_manager"
             android:drawableRight="@drawable/ic_manager"
             android:layout_marginTop="20dp"
@@ -32,8 +32,8 @@
 
 
         <Button
+            android:id="@+id/btn_sec_zone"
             style="@style/MainButtonStyleLand"
-            android:id="@+id/btn_account_sett"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -56,8 +56,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/btn_settings"
             style="@style/MainButtonStyleLand"
-            android:id="@+id/btn_rep_res"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,11 +72,11 @@
             android:padding="20dp"/>
 
         <Button
+            android:id="@+id/btn_report"
             style="@style/MainButtonStyleLand"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/btn_pass_changing"
             android:text="@string/btn_ttl_report_results"
             android:drawableRight="@drawable/ic_reports"
             android:layout_marginTop="10dp"

@@ -9,9 +9,9 @@
     android:gravity="top|center">
 
         <Button
+            android:id="@+id/btn_sentinels"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_sentinels"
             android:text="@string/btn_ttl_accounts_manager"
             android:drawableRight="@drawable/ic_manager"
             android:layout_marginTop="20dp"
