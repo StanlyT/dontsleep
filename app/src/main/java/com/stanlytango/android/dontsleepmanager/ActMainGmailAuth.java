@@ -20,6 +20,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SecuredZone;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
+import com.stanlytango.android.dontsleepmanager.databasestructure.ShiftSettings;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -82,6 +83,7 @@ public class ActMainGmailAuth extends BaseActivity
 
     private final String DBSecuredZoneName = "securedzone";
     private final String DBSentintelName = "sentinel";
+    private final String DBShiftSettingsName = "shiftsettings";
 
   //  private static final Set<String> SCOPES = GmailScopes.all();
 
@@ -102,9 +104,35 @@ public class ActMainGmailAuth extends BaseActivity
         mOutputText.setPadding(16, 16, 16, 16);
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        mOutputText.setText(
-                "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
+        mOutputText.setText("TextView");
 
+        // проверяем существует ли БД НАСТРОЕК СМЕНЫ
+        // если нет, то создаем дефолтный элемент
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference dbRef = firebaseDatabase.getReference();
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.child(DBShiftSettingsName).exists()){
+                    ShiftSettings shiftSettings = new ShiftSettings();
+                    shiftSettings.addDefaultSetting(dbRef.child(DBShiftSettingsName));
+                    Toast.makeText(getApplicationContext(),
+                            " ЕВРИКА!!! ",Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG,DBShiftSettingsName+" exists");
+                    Toast.makeText(getApplicationContext(),
+                            " ChildrenCount "+dataSnapshot.getChildrenCount(),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        // кнопка ОБМЕН ДАННЫМИ
         mButtonStartExchange = (Button) findViewById(R.id.btn_start_exchange);
         mButtonStartExchange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,38 +144,25 @@ public class ActMainGmailAuth extends BaseActivity
                 mButtonStartExchange.setEnabled(true);
         // =====================================================
 
-        // #BC3 проверяем не пуста ли БД =================================================
+        // #BC3 проверяем есть ли DBSentinel и DBSecZone для дальнейшего обмена данными
                 // получаем  ссылку на базу данных
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference dbRef = firebaseDatabase.getReference();
-                if (dbRef == null){
-                    Log.d(TAG, "dbRef = NULL");
-                }
-                    //разовая проверка БД методом
-                   // addListenerForSingleValueEvent
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+
+                   //  разовая проверка БД методом
+                  // addListenerForSingleValueEvent
                 dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>(){};
-                        Map<String, Object> map = (HashMap<String, Object>)dataSnapshot.getValue(t);
-
-
-                        if (map == null)
-                            Toast.makeText(getApplicationContext(),
-                                    "NULL База данных ПУСТА ",Toast.LENGTH_LONG).show();
-                        if (map.size() == 1){
-                            if (map.containsKey(DBSecuredZoneName)){
-                                Toast.makeText(getApplicationContext(),
-                                        DBSentintelName+" is empty",Toast.LENGTH_LONG).show();
+                        if (dataSnapshot.hasChild(DBSecuredZoneName)){
+                            if (dataSnapshot.hasChild(DBSentintelName)){
+                                Toast.makeText(getApplicationContext(),"All neccassary DB exist, data exchange can be continued",Toast.LENGTH_LONG).show();
                             } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            DBSecuredZoneName+" is empty",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),DBSentintelName+" is empty",Toast.LENGTH_LONG).show();
                                 }
                             } else
                                Toast.makeText(getApplicationContext(),
-                                ""+map.size(),Toast.LENGTH_LONG).show();
+                                DBSecuredZoneName+"is empty",Toast.LENGTH_LONG).show();
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -155,8 +170,9 @@ public class ActMainGmailAuth extends BaseActivity
                 });
             }
         });
-        // #BC3 проверили не пуста ли БД =================================================
+        // #BC3 проверили есть ли DBSentinel и DBSecZone ===================================
 
+        // кнопка добавление Охраняемой Зоны
         mButtonSecuredZones = (Button) findViewById(R.id.btn_sec_zone);
         mButtonSecuredZones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +186,7 @@ public class ActMainGmailAuth extends BaseActivity
             }
         });
 
-
+        // кнопка добавление Охранника
         mButtonSentinels = (Button) findViewById(R.id.btn_sentinels);
         mButtonSentinels.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +200,7 @@ public class ActMainGmailAuth extends BaseActivity
             }
         });
 
+        // кнопка создать Отчет
         mButtonReport = (Button) findViewById(R.id.btn_report);
         mButtonReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,11 +208,6 @@ public class ActMainGmailAuth extends BaseActivity
 
             }
         });
-
-
-
-
-
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Gmail API ...");

@@ -11,4 +11,14 @@ public class Shift {
     public Date shiftEnd;
     public List<Date> missedInspecTimeList;
     public Map<Date, Date> pausesList;
+
+    public Shift(String shiftID, List<String> sentinelID, String zoneID, Date shiftStart, Date shiftEnd, List<Date> missedInspecTimeList, Map<Date, Date> pausesList) {
+        this.shiftID = shiftID;
+        this.sentinelID = sentinelID;
+        this.zoneID = zoneID;
+        this.shiftStart = shiftStart;
+        this.shiftEnd = shiftEnd;
+        this.missedInspecTimeList = missedInspecTimeList;
+        this.pausesList = pausesList;
+    }
 }
