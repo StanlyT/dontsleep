@@ -206,7 +206,7 @@ public class ActMainGmailAuth extends BaseActivity
             }
         });
 
-        // кнопка создать Отчет
+        // кнопка Default Settings
         mButtonSettings = (Button) findViewById(R.id.btn_settings);
         mButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
