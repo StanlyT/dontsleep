@@ -10,6 +10,7 @@ public class Sentinel {
     String password;
     String name;
     String surname;
+    String state;
 
     public Sentinel(){
     }

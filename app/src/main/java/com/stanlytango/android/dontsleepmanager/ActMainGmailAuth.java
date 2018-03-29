@@ -157,11 +157,11 @@ public class ActMainGmailAuth extends BaseActivity
                             if (dataSnapshot.hasChild(DBSentintelName)){
                                 Toast.makeText(getApplicationContext(),"All neccassary DB exist, data exchange can be continued",Toast.LENGTH_LONG).show();
                             } else {
-                                    Toast.makeText(getApplicationContext(),DBSentintelName+" is empty",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"You have to create at least one Sentinel",Toast.LENGTH_LONG).show();
                                 }
                             } else
                                Toast.makeText(getApplicationContext(),
-                                DBSecuredZoneName+"is empty",Toast.LENGTH_LONG).show();
+                                "You have to create at least one Secured Zone for monitoring",Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

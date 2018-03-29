@@ -56,6 +56,7 @@ public class ShiftSettings {
     // this method for custom setting
     public void addDefaultSetting(DatabaseReference dbRef, Integer timeForResponse, Integer quantityOfInspections, Integer pause, Boolean signal, Boolean blockBackHome){
         ShiftSettings shiftSettings = new ShiftSettings(timeForResponse, quantityOfInspections, pause, signal, blockBackHome);
+
         Map<String, Object> node = shiftSettings.toMap();
         Map<String, Object> structure = new HashMap<>();
         structure.put("defaultKeySetting", node);
@@ -66,5 +67,5 @@ public class ShiftSettings {
 // SETTERS ==================================================================
 
 // GETTERS ==================================================================
-    
+
 }
