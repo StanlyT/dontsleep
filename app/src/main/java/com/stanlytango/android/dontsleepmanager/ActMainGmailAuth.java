@@ -8,6 +8,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Data;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
@@ -20,6 +21,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SecuredZone;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
+import com.stanlytango.android.dontsleepmanager.databasestructure.Shift;
 import com.stanlytango.android.dontsleepmanager.databasestructure.ShiftSettings;
 
 import android.Manifest;
@@ -84,6 +86,7 @@ public class ActMainGmailAuth extends BaseActivity
     private final String DBSecuredZoneName = "securedzone";
     private final String DBSentintelName = "sentinel";
     private final String DBShiftSettingsName = "shiftsettings";
+    private final String DBShiftName = "shift";
 
   //  private static final Set<String> SCOPES = GmailScopes.all();
 
@@ -202,6 +205,8 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Shift shift = new Shift();
+                shift.letsSayThereIsShift(dbRef.child(DBShiftName));
 
             }
         });
@@ -211,7 +216,9 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ShiftSettings shiftSettings = new ShiftSettings();
+                shiftSettings.writeNewSetting(dbRef.child(DBShiftSettingsName),
+                        1, 2, 2, true, false);
             }
         });
 
