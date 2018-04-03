@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SecuredZone;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
@@ -171,7 +172,7 @@ public class ActMainGmailAuth extends BaseActivity
 
                    //  разовая проверка БД методом
                   // addListenerForSingleValueEvent
-                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                dbRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(DBSecuredZoneName)){
@@ -181,11 +182,10 @@ public class ActMainGmailAuth extends BaseActivity
 
  //ТЕСТируем
  // БД SentinelShiftId
- /**/                       SentintelShiftID sentintelShiftID = new SentintelShiftID();
- /* вводим промеж-ый тип */ GenericTypeIndicator<HashMap<String,Object>> t = new GenericTypeIndicator<HashMap<String,Object>>(){};
- /* получаем */             Map<String,Object> map = dataSnapshot.child(DBSentinelShiftIDName).getValue(t);
-               /*  */       Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!!"+ map.toString());
-
+ /**/
+ /* вводим промеж-ый тип */ GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
+ /* получаем */             List<String> lst = dataSnapshot.child(DBSentinelShiftIDName).child("brooks").getValue(t);
+               /*  */       Log.d(TAG, "!!!!!!!!!!!!!!!!"+ lst.toString());
 
 
                             } else {
