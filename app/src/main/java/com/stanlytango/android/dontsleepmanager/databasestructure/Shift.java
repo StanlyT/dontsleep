@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Shift {
-    //public String shiftID;
     public List<String> sentinelID;
     public String zoneID;
     public Long timeShiftStart;
@@ -20,7 +19,7 @@ public class Shift {
 
     public Shift (){}
 
-    public Shift(//String shiftID,
+    public Shift(
                  List<String> sentinelID,
                  String zoneID,
                  Long shiftStart,
@@ -28,7 +27,6 @@ public class Shift {
                  List<Long> missedInspecTimeList,
                  Map<String, String> pausesList
     ) {
-//        this.shiftID = shiftID;
         this.sentinelID = sentinelID;
         this.zoneID = zoneID;
         this.timeShiftStart = shiftStart;
@@ -39,7 +37,6 @@ public class Shift {
 
     public Map<String, Object> toMap(){
         Map<String, Object> map = new HashMap<>();
-        //   map.put("shiftID", shiftID);
         map.put("sentinelID", sentinelID);
         map.put("zoneID",zoneID);
         map.put("timeShiftStart", timeShiftStart);

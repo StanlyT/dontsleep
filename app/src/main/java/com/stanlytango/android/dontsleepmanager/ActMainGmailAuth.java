@@ -21,6 +21,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SecuredZone;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
+import com.stanlytango.android.dontsleepmanager.databasestructure.SentintelShiftID;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Shift;
 import com.stanlytango.android.dontsleepmanager.databasestructure.ShiftSettings;
 
@@ -87,6 +88,7 @@ public class ActMainGmailAuth extends BaseActivity
     private final String DBSentintelName = "sentinel";
     private final String DBShiftSettingsName = "shiftsettings";
     private final String DBShiftName = "shift";
+    private final String DBSentinelShiftIDName = "sentintel_shift_id";
 
   //  private static final Set<String> SCOPES = GmailScopes.all();
 
@@ -127,12 +129,20 @@ public class ActMainGmailAuth extends BaseActivity
                             " ChildrenCount "+dataSnapshot.getChildrenCount(),Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
+
+
+        //ТЕСТируем
+        // БД SentinelShiftId
+        // допустим уже есть какая-то история, и дальше при нажатии DataExchange
+        // должно произойти обновление текущей БД
+        SentintelShiftID sentintelShiftID = new SentintelShiftID();
+        sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"brooks", Arrays.asList("shift1","shift2"));
+        sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"fbiagent",Arrays.asList("shift3","shift4"));
+
+
 
 
         // кнопка ОБМЕН ДАННЫМИ
@@ -147,9 +157,17 @@ public class ActMainGmailAuth extends BaseActivity
                 mButtonStartExchange.setEnabled(true);
         // =====================================================
 
+                //ТЕСТируем
+                // БД SentinelShiftId
+                // допустим уже есть какая-то история, и теперь при нажатии DataExchange
+                // должно произойти обновление текущей БД
+                SentintelShiftID sentintelShiftID = new SentintelShiftID();
+                sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"brooks",Arrays.asList("id11","id12","id13"));
+
+
         // #BC3 проверяем есть ли DBSentinel и DBSecZone для дальнейшего обмена данными
                 // получаем  ссылку на базу данных
-                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
                    //  разовая проверка БД методом
                   // addListenerForSingleValueEvent
@@ -158,7 +176,18 @@ public class ActMainGmailAuth extends BaseActivity
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(DBSecuredZoneName)){
                             if (dataSnapshot.hasChild(DBSentintelName)){
+                                // все необходимые БД есть, можно двигаться дальше
                                 Toast.makeText(getApplicationContext(),"All neccassary DB exist, data exchange can be continued",Toast.LENGTH_LONG).show();
+
+ //ТЕСТируем
+ // БД SentinelShiftId
+ /**/                       SentintelShiftID sentintelShiftID = new SentintelShiftID();
+ /* вводим промеж-ый тип */ GenericTypeIndicator<HashMap<String,Object>> t = new GenericTypeIndicator<HashMap<String,Object>>(){};
+ /* получаем */             Map<String,Object> map = dataSnapshot.child(DBSentinelShiftIDName).getValue(t);
+               /*  */       Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!!"+ map.toString());
+
+
+
                             } else {
                                     Toast.makeText(getApplicationContext(),"You have to create at least one Sentinel",Toast.LENGTH_LONG).show();
                                 }
