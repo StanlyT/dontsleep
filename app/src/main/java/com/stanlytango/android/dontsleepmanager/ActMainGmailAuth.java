@@ -183,8 +183,10 @@ public class ActMainGmailAuth extends BaseActivity
  //ТЕСТируем
  // БД SentinelShiftId
  /**/
- /* вводим промеж-ый тип */ GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
- /* получаем */             List<String> lst = dataSnapshot.child(DBSentinelShiftIDName).child("brooks").getValue(t);
+ /* вводим промеж-ый тип */ //GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
+ /* получаем */         //    List<String> lst = dataSnapshot.child(DBSentinelShiftIDName).child("brooks").getValue(t);
+ /* получаем */             List<String> lst = new SentintelShiftID().getShiftIDList(dataSnapshot, DBSentinelShiftIDName,"brooks");
+
                /*  */       Log.d(TAG, "!!!!!!!!!!!!!!!!"+ lst.toString());
 
 

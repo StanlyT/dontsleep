@@ -17,7 +17,7 @@ import java.util.Map;
  */
 
 public class SentintelShiftID {
-    
+
     List<String> shiftID;
 
     public SentintelShiftID(){
@@ -26,6 +26,7 @@ public class SentintelShiftID {
     public SentintelShiftID(List<String> shiftID) {
         this.shiftID = shiftID;
     }
+
 
     public void addNewSentinelShiftID(DatabaseReference dbRef, String sentinelID, List<String> listShiftID){
         String key = sentinelID;
@@ -36,7 +37,7 @@ public class SentintelShiftID {
     }
 
     public List<String> getShiftIDList(DataSnapshot dataSnapshot, String dbName, String sentinelID){
-        GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>(){};
+        GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
         List<String> shiftIDList = dataSnapshot.child(dbName).child(sentinelID).getValue(t);
         return shiftIDList;
     }
