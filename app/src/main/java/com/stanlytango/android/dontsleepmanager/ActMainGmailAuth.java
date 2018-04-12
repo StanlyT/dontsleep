@@ -134,35 +134,25 @@ public class ActMainGmailAuth extends BaseActivity
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-
-        //ТЕСТируем
-        // БД SentinelShiftId
-        // допустим уже есть какая-то история, и дальше при нажатии DataExchange
-        // должно произойти обновление текущей БД
-        SentintelShiftID sentintelShiftID = new SentintelShiftID();
-        sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"brooks", Arrays.asList("shift1","shift2"));
-        sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"fbiagent",Arrays.asList("shift3","shift4"));
-
-
-
-
         // кнопка ОБМЕН ДАННЫМИ
         mButtonStartExchange = (Button) findViewById(R.id.btn_start_exchange);
         mButtonStartExchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+////////////////////////////////////////////////////////////////////////////////////////
         // получаем результат API из почтового ящика
                 mButtonStartExchange.setEnabled(false);
                 mOutputText.setText("");
                 getResultsFromApi(); // !!!!!!!!!!!!!!!!!!!!!!!!
                 mButtonStartExchange.setEnabled(true);
+////////////////////////////////////////////////////////////////////////////////////////
         // =====================================================
 
                 //ТЕСТируем
                 // БД SentinelShiftId
                 // допустим уже есть какая-то история, и теперь при нажатии DataExchange
                 // должно произойти обновление текущей БД
-                SentintelShiftID sentintelShiftID = new SentintelShiftID();
+                final SentintelShiftID sentintelShiftID = new SentintelShiftID();
                 sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"brooks",Arrays.asList("id11","id12","id13"));
 
 
@@ -172,7 +162,7 @@ public class ActMainGmailAuth extends BaseActivity
 
                    //  разовая проверка БД методом
                   // addListenerForSingleValueEvent
-                dbRef.addValueEventListener(new ValueEventListener() {
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(DBSecuredZoneName)){
@@ -183,9 +173,10 @@ public class ActMainGmailAuth extends BaseActivity
  //ТЕСТируем
  // БД SentinelShiftId
  /**/
- /* вводим промеж-ый тип */ //GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
- /* получаем */         //    List<String> lst = dataSnapshot.child(DBSentinelShiftIDName).child("brooks").getValue(t);
- /* получаем */             List<String> lst = new SentintelShiftID().getShiftIDList(dataSnapshot, DBSentinelShiftIDName,"brooks");
+                            SentintelShiftID sentintelShiftID = new SentintelShiftID();
+ /* получаем */             List<String> lst = sentintelShiftID.getShiftIDList(dataSnapshot, DBSentinelShiftIDName,"brooks");
+                            lst.add("NEW_SHIFT_ID");
+                            sentintelShiftID.addNewSentinelShiftID(dbRef.child(DBSentinelShiftIDName),"brooks",lst);
 
                /*  */       Log.d(TAG, "!!!!!!!!!!!!!!!!"+ lst.toString());
 

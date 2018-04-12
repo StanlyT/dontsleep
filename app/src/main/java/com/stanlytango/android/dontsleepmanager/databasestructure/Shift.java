@@ -25,7 +25,7 @@ public class Shift {
                  Long shiftStart,
                  Long shiftEnd,
                  List<Long> missedInspecTimeList,
-                 Map<String, String> pausesList
+                 Map<String, String> pausesList // Map<String, Object>
     ) {
         this.sentinelID = sentinelID;
         this.zoneID = zoneID;
