@@ -86,7 +86,7 @@ public class ActMainGmailAuth extends BaseActivity
     };
 
     private final String DBSecuredZoneName = "securedzone";
-    private final String DBSentintelName = "sentinel";
+    private final String DBSentintelName = "sentinel_view";
     private final String DBShiftSettingsName = "shiftsettings";
     private final String DBShiftName = "shift";
     private final String DBSentinelShiftIDName = "sentintel_shift_id";
@@ -112,7 +112,7 @@ public class ActMainGmailAuth extends BaseActivity
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
         mOutputText.setText("TextView");
 
-        // проверяем существует ли БД НАСТРОЕК СМЕНЫ
+        // проверяем существует ли БД НАСТРОЕК смены
         // если нет, то создаем дефолтный элемент
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference dbRef = firebaseDatabase.getReference();
@@ -214,6 +214,9 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonSentinels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                startActivity(ActSentinel.newIntent(getApplicationContext(),ActSentinel.class, true));
+
                 DatabaseReference dbSentinelRef = FirebaseDatabase.getInstance().getReference(DBSentintelName);
                 Sentinel sentinel = new Sentinel();
                 // допустим у нас есть база данных Sentinel
