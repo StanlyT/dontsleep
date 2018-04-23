@@ -134,12 +134,12 @@ public class ActMainGmailAuth extends BaseActivity
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        // кнопка ОБМЕН ДАННЫМИ
+/////////// кнопка ОБМЕН ДАННЫМИ ////////////////////////////////////////////////////////
         mButtonStartExchange = (Button) findViewById(R.id.btn_start_exchange);
         mButtonStartExchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-////////////////////////////////////////////////////////////////////////////////////////
+
         // получаем результат API из почтового ящика
                 mButtonStartExchange.setEnabled(false);
                 mOutputText.setText("");

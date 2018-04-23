@@ -62,7 +62,7 @@ public class Shift {
         dbRef.updateChildren(structure);
     }
 
-
+// testing method
     public void letsSayThereIsShift (DatabaseReference dbRef){
         Shift shift = new Shift();
         Map<String, String> mapPauses = PauseFactory.getInst().init(2017,03,
