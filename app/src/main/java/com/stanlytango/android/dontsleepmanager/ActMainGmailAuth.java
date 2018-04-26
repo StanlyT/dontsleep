@@ -86,7 +86,7 @@ public class ActMainGmailAuth extends BaseActivity
     };
 
     private final String DBSecuredZoneName = "securedzone";
-    private final String DBSentintelName = "sentinel_view";
+    private final String DBSentintelName = "sentinel";
     private final String DBShiftSettingsName = "shiftsettings";
     private final String DBShiftName = "shift";
     private final String DBSentinelShiftIDName = "sentintel_shift_id";

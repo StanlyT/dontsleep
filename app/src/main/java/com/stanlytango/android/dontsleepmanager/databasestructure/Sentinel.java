@@ -1,8 +1,12 @@
 package com.stanlytango.android.dontsleepmanager.databasestructure;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,16 +14,20 @@ import java.util.List;
 import java.util.Map;
 
 public class Sentinel {
+    private static final String TAG = "# Sentinel";
+
+    static List<Sentinel> list = new ArrayList<>();
+
     public String login;
     public String password;
     public String name;
     public String surname;
-    public Integer state;
+    public Long state;
 
     public Sentinel(){
     }
 
-    public Sentinel(String login, String password, String name, String surname, Integer state) {
+    public Sentinel(String login, String password, String name, String surname, Long state) {
         this.login = login;
         this.password = password;
         this.name = name;
@@ -37,7 +45,21 @@ public class Sentinel {
         return map;
     }
 
-    public void writeNewSentinel(DatabaseReference dbRef, String login, String password, String name, String surname, Integer state){
+
+    public Sentinel mapToSentinel(Map<String, Object> map){
+        Sentinel sentinel = new Sentinel();
+        sentinel.login = (String)map.get("login");
+        sentinel.password = (String)map.get("password");
+        sentinel.name = (String)map.get("name");
+        //sentinel.surname = (String)map.get("surname");
+        //sentinel.state = (Integer)map.get("state");
+        sentinel.surname = map.get("surname") == null ? null : (String)map.get("surname");
+        sentinel.state = map.get("state") == null ? null : (Long)map.get("state");
+
+        return sentinel;
+    }
+
+    public void writeNewSentinel(DatabaseReference dbRef, String login, String password, String name, String surname, Long state){
         String key = dbRef.child(login).getKey();
         Sentinel sentinel = new Sentinel(login, password, name, surname, state);
         Map<String,Object> node = sentinel.toMap();
@@ -46,28 +68,24 @@ public class Sentinel {
         dbRef.updateChildren(structure);
     }
 
-    //
-    public List<String> getSentinelDBList(DataSnapshot dataSnapshot, String dbName, String sentinelID){
-        GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
-        List<String> shiftIDList = dataSnapshot.child(dbName).child(sentinelID).getValue(t);
-        return shiftIDList;
-    }
-
     // !!! ====== testing method ====== !!!
     public void letsSayThereIsSentinelDB(DatabaseReference dbSentinelRef){
-        writeNewSentinel(dbSentinelRef, "jamesbond", "fdhjfr", "Alexander", "Borodach", 1);
-        writeNewSentinel(dbSentinelRef, "mrsmith", "ghtnfjk", "Balera", "Geraschenko", 1);
-        writeNewSentinel(dbSentinelRef, "fbiagent", "gjrisdl", "Jora", "Pupkov", 1);
-        writeNewSentinel(dbSentinelRef, "brooks", "egjhry", "Vasya", "Tyorkin", 1);
-        writeNewSentinel(dbSentinelRef, "tamada", "edhtoe", "Vasya", "Tyorkin", 1);
+        Long state = Long.valueOf(1);
+        writeNewSentinel(dbSentinelRef, "jamesbond", "fdhjfr", "Alexander", "Borodach", state);
+        writeNewSentinel(dbSentinelRef, "mrsmith", "ghtnfjk", "Balera", "Geraschenko", state);
+        writeNewSentinel(dbSentinelRef, "fbiagent", "gjrisdl", "Jora", "Pupkov", state);
+        writeNewSentinel(dbSentinelRef, "brooks", "egjhry", "Vasya", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "tamada", "edhtoe", "Vasya", "Tyorkin", state);
     }
 
     // !!! ====== testing method ====== !!!
     public List<Sentinel> makeList (){
+        Long state = Long.valueOf(1);
+
         List<Sentinel> list = new ArrayList<>();
-        Sentinel s1 = new Sentinel("brooks", "pswrdBRKS", "John", "Brooks", 1);
-        Sentinel s2 = new Sentinel("borodach", "pswrdBRDCH", "Alex", "Borodach",1);
-        Sentinel s3 = new Sentinel("agent007", "pswrdGNT7", "Prosto","Valera",1);
+        Sentinel s1 = new Sentinel("brooks", "pswrdBRKS", "John", "Brooks", state);
+        Sentinel s2 = new Sentinel("borodach", "pswrdBRDCH", "Alex", "Borodach",state);
+        Sentinel s3 = new Sentinel("agent007", "pswrdGNT7", "Prosto","Valera",state);
         list.add(s1);
         list.add(s2);
         list.add(s3);

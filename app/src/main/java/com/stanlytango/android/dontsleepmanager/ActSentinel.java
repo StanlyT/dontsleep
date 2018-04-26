@@ -9,17 +9,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.stanlytango.android.dontsleepmanager.databasestructure.FirebaseCallback;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
+import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class ActSentinel extends BaseActivity {
+public class ActSentinel extends BaseActivity implements FirebaseCallback{
+    private static final String TAG = "# ActSentinel";
+
     RecyclerView mRecyclerView;
     SentinelViewAdapter adapter;
+    private final String DBSentintelName = "sentinel";
 
     Sentinel sentinel = new Sentinel();
-    List<Sentinel> list = sentinel.makeList();
+    FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference dbRef = mFirebaseDatabase.getReference(DBSentintelName);
+    List<Sentinel> list = new ArrayList<>();
+    SentinelStorage sentinelStorage;
+
+    @Override
+    public void onCallback(List<Sentinel> lst) {
+        list.addAll(lst);
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "INSIDE onCallback list empty :: "+list.isEmpty());
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,14 +46,17 @@ public class ActSentinel extends BaseActivity {
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         adapter = new SentinelViewAdapter(list);
+
+        sentinelStorage = SentinelStorage.get();
+        //sentinelStorage.loadSentinelsListFromDB(dbRef);// testing with notnull list
+        sentinelStorage.readSentinelsListFromDB(dbRef, this);
+
         mRecyclerView.setAdapter(adapter);
 
+        Log.d(TAG, "!!!! list empty :: "+list.isEmpty());
     }
 
-    // класс view holder-а с помощью которого мы получаем ссылки
-    // на каждый виджет из отдельного пункта списка
     public class SentinelViewHolder extends RecyclerView.ViewHolder{
         Sentinel sentinel;
         TextView tvLogin;
@@ -67,7 +88,7 @@ public class ActSentinel extends BaseActivity {
             mSentinels = guards;
         }
 
-        // Создает новые views (вызывается layout manager-ом)
+
         public SentinelViewHolder onCreateViewHolder(ViewGroup container, int viewType){
             View view = LayoutInflater.from(container.getContext())
                     .inflate(R.layout.item_of_sentinel_table, container,false);
@@ -76,15 +97,13 @@ public class ActSentinel extends BaseActivity {
             return vh;
         }
 
-        //Связываем данные с виджетами каждого item'a во ViewHolder'е
+
         public void onBindViewHolder(SentinelViewHolder sentinelVH, int position){
             Log.d("onBindViewHolder"," myViewHolder = position "+position);
             Sentinel sentinel = mSentinels.get(position);
             sentinelVH.bind(sentinel);
         }
 
-        // Последний обязательный для реализации метод
-        // Возвращает размер данных (вызывается layout manager-ом)
         public int getItemCount(){
             return mSentinels.size();
         }
