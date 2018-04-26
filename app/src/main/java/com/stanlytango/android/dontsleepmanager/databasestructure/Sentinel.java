@@ -16,8 +16,6 @@ import java.util.Map;
 public class Sentinel {
     private static final String TAG = "# Sentinel";
 
-    static List<Sentinel> list = new ArrayList<>();
-
     public String login;
     public String password;
     public String name;

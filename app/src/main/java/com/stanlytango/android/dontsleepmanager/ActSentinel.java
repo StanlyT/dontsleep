@@ -3,7 +3,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.stanlytango.android.dontsleepmanager.databasestructure.FirebaseCallback;
+import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelFirebaseCallback;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelStorage;
 
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ActSentinel extends BaseActivity implements FirebaseCallback{
+public class ActSentinel extends BaseActivity implements SentinelFirebaseCallback {
     private static final String TAG = "# ActSentinel";
 
     RecyclerView mRecyclerView;
@@ -48,7 +47,7 @@ public class ActSentinel extends BaseActivity implements FirebaseCallback{
         adapter = new SentinelViewAdapter(list);
 
         sentinelStorage = SentinelStorage.get();
-        // callback method of FirebaseCallback interace
+        // callback method of SentinelFirebaseCallback interface
         sentinelStorage.readSentinelsListFromDB(dbRef, this);
 
         mRecyclerView.setAdapter(adapter);  // Log.d(TAG, "!!!! list empty :: "+list.isEmpty());
@@ -85,7 +84,6 @@ public class ActSentinel extends BaseActivity implements FirebaseCallback{
             mSentinels = guards;
         }
 
-
         public SentinelViewHolder onCreateViewHolder(ViewGroup container, int viewType){
             View view = LayoutInflater.from(container.getContext())
                     .inflate(R.layout.item_of_sentinel_table, container,false);
@@ -96,7 +94,7 @@ public class ActSentinel extends BaseActivity implements FirebaseCallback{
 
 
         public void onBindViewHolder(SentinelViewHolder sentinelVH, int position){
-            Log.d("onBindViewHolder"," myViewHolder = position "+position);
+            //Log.d("onBindViewHolder"," myViewHolder = position "+position);
             Sentinel sentinel = mSentinels.get(position);
             sentinelVH.bind(sentinel);
         }
