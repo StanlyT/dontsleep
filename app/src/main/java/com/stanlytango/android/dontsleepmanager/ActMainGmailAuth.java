@@ -214,11 +214,11 @@ public class ActMainGmailAuth extends BaseActivity
         mButtonSentinels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivity(ActSentinel.newIntent(getApplicationContext(),ActSentinel.class, true));
 
                 DatabaseReference dbSentinelRef = FirebaseDatabase.getInstance().getReference(DBSentintelName);
                 Sentinel sentinel = new Sentinel();
+
                 // допустим у нас есть база данных Sentinel
                 sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
 

@@ -48,14 +48,11 @@ public class Sentinel {
 
     public Sentinel mapToSentinel(Map<String, Object> map){
         Sentinel sentinel = new Sentinel();
-        sentinel.login = (String)map.get("login");
-        sentinel.password = (String)map.get("password");
-        sentinel.name = (String)map.get("name");
-        //sentinel.surname = (String)map.get("surname");
-        //sentinel.state = (Integer)map.get("state");
-        sentinel.surname = map.get("surname") == null ? null : (String)map.get("surname");
-        sentinel.state = map.get("state") == null ? null : (Long)map.get("state");
-
+        sentinel.login    =    map.get("login") == null ? null : (String)map.get("login");
+        sentinel.password = map.get("password") == null ? null : (String)map.get("password");
+        sentinel.name   =    map.get("name")    == null ? null : (String)map.get("name");
+        sentinel.surname  =  map.get("surname") == null ? null : (String)map.get("surname");
+        sentinel.state   =   map.get("state")   == null ? null : (Long) map.get("state");
         return sentinel;
     }
 
@@ -74,8 +71,11 @@ public class Sentinel {
         writeNewSentinel(dbSentinelRef, "jamesbond", "fdhjfr", "Alexander", "Borodach", state);
         writeNewSentinel(dbSentinelRef, "mrsmith", "ghtnfjk", "Balera", "Geraschenko", state);
         writeNewSentinel(dbSentinelRef, "fbiagent", "gjrisdl", "Jora", "Pupkov", state);
-        writeNewSentinel(dbSentinelRef, "brooks", "egjhry", "Vasya", "Tyorkin", state);
-        writeNewSentinel(dbSentinelRef, "tamada", "edhtoe", "Vasya", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "brooks", "egjhry", "Brooks", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "tamada", "sdf211s", "Tamada", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "kolya", "gfddg", "Kolya", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "jora", "asdfe", "Jors", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "alex", "esdfsd", "Alex", "Tyorkin", state);
     }
 
     // !!! ====== testing method ====== !!!

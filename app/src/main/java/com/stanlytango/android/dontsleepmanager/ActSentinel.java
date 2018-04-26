@@ -35,8 +35,7 @@ public class ActSentinel extends BaseActivity implements FirebaseCallback{
     @Override
     public void onCallback(List<Sentinel> lst) {
         list.addAll(lst);
-        adapter.notifyDataSetChanged();
-        Log.d(TAG, "INSIDE onCallback list empty :: "+list.isEmpty());
+        adapter.notifyDataSetChanged();// Log.d(TAG, "INSIDE onCallback list empty :: "+list.isEmpty());
     }
 
     @Override
@@ -49,12 +48,10 @@ public class ActSentinel extends BaseActivity implements FirebaseCallback{
         adapter = new SentinelViewAdapter(list);
 
         sentinelStorage = SentinelStorage.get();
-        //sentinelStorage.loadSentinelsListFromDB(dbRef);// testing with notnull list
+        // callback method of FirebaseCallback interace
         sentinelStorage.readSentinelsListFromDB(dbRef, this);
 
-        mRecyclerView.setAdapter(adapter);
-
-        Log.d(TAG, "!!!! list empty :: "+list.isEmpty());
+        mRecyclerView.setAdapter(adapter);  // Log.d(TAG, "!!!! list empty :: "+list.isEmpty());
     }
 
     public class SentinelViewHolder extends RecyclerView.ViewHolder{
