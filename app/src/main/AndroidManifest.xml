@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".ActSentinel">
         </activity>
+        <activity android:name=".ActNewSentinel">
+        </activity>
     </application>
 
 </manifest>

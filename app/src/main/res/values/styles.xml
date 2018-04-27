@@ -16,4 +16,11 @@
     <style name="SentinelStyle" parent="@style/AppTheme">
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="SentinelStyleInput" parent="@style/AppTheme">
+        <item name="android:textColorHint">#828282</item>
+        <item name="android:cacheColorHint">#dfb457</item>
+        <item name="android:textColorHintInverse">#37ff00</item>
+        <item name="android:colorBackgroundCacheHint">#00bef2</item>
+    </style>
 </resources>

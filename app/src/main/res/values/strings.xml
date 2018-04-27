@@ -49,6 +49,12 @@
     <string name="tv_every">every</string>
 
     <string name="menu_new_sentinel">NEW SENTINEL</string>
+    <string name="ok">OK</string>
+    <string name="dialog_title_new_sentinel">ADD NEW SENTINEL</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_login">Login</string>
+    <string name="hint_password">Password</string>
 
 
 

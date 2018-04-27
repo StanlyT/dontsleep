@@ -4,7 +4,7 @@
     <item
         android:id="@+id/new_sentinel"
         android:title="@string/menu_new_sentinel"
-        android:icon="@drawable/add_sentinel"
+        android:icon="@drawable/new_sentinel"
         app:showAsAction="ifRoom|withText"/>
     <item
         android:id="@+id/quit_main"

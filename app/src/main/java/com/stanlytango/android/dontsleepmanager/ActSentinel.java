@@ -55,6 +55,8 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.new_sentinel:
+                startActivity(ActNewSentinel.newIntent(getApplicationContext(),ActNewSentinel.class, true));
+
                 break;
             case R.id.quit_main:
                 break;
