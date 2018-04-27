@@ -1,9 +1,14 @@
 package com.stanlytango.android.dontsleepmanager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,8 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ActSentinel extends BaseActivity implements SentinelFirebaseCallback {
+public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCallback {
+    public static final String EXTRA = "extra";
     private static final String TAG = "# ActSentinel";
+    private static final int MENU_ADD_GUARD = 123;
 
     RecyclerView mRecyclerView;
     SentinelViewAdapter adapter;
@@ -30,6 +37,30 @@ public class ActSentinel extends BaseActivity implements SentinelFirebaseCallbac
     DatabaseReference dbRef = mFirebaseDatabase.getReference(DBSentintelName);
     List<Sentinel> list = new ArrayList<>();
     SentinelStorage sentinelStorage;
+
+    public static Intent newIntent (Context context, Class<?> cls, Boolean b){
+        Intent i = new Intent (context, cls);
+        i.putExtra(EXTRA, b);
+        return i;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_sentinel, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.new_sentinel:
+                break;
+            case R.id.quit_main:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCallback(List<Sentinel> lst) {
@@ -47,6 +78,7 @@ public class ActSentinel extends BaseActivity implements SentinelFirebaseCallbac
         adapter = new SentinelViewAdapter(list);
 
         sentinelStorage = SentinelStorage.get();
+
         // callback method of SentinelFirebaseCallback interface
         sentinelStorage.readSentinelsListFromDB(dbRef, this);
 

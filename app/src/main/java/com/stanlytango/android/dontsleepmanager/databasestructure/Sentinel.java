@@ -1,7 +1,5 @@
 package com.stanlytango.android.dontsleepmanager.databasestructure;
-
 import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,13 +65,13 @@ public class Sentinel {
     public void letsSayThereIsSentinelDB(DatabaseReference dbSentinelRef){
         Long state = Long.valueOf(1);
         writeNewSentinel(dbSentinelRef, "jamesbond", "fdhjfr", "Alexander", "Borodach", state);
-        writeNewSentinel(dbSentinelRef, "mrsmith", "ghtnfjk", "Balera", "Geraschenko", state);
+        writeNewSentinel(dbSentinelRef, "mrsmith", "ghtnfjk", "Balera", "Shestiorkin", state);
         writeNewSentinel(dbSentinelRef, "fbiagent", "gjrisdl", "Jora", "Pupkov", state);
-        writeNewSentinel(dbSentinelRef, "brooks", "egjhry", "Brooks", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "brooks", "egjhry", "Brooks", "Bychkov", state);
         writeNewSentinel(dbSentinelRef, "tamada", "sdf211s", "Tamada", "Tyorkin", state);
-        writeNewSentinel(dbSentinelRef, "kolya", "gfddg", "Kolya", "Tyorkin", state);
-        writeNewSentinel(dbSentinelRef, "jora", "asdfe", "Jors", "Tyorkin", state);
-        writeNewSentinel(dbSentinelRef, "alex", "esdfsd", "Alex", "Tyorkin", state);
+        writeNewSentinel(dbSentinelRef, "kolya", "gfddg", "Kolya", "Patsanchuk", state);
+        writeNewSentinel(dbSentinelRef, "jora", "asdfe", "Jors", "Gopnikovskyi", state);
+        writeNewSentinel(dbSentinelRef, "alex", "esdfsd", "Alex", "Chmoshkin", state);
     }
 
     // !!! ====== testing method ====== !!!

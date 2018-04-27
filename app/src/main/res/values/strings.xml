@@ -48,6 +48,9 @@
     <string name="tv_max_pause">not more than</string>
     <string name="tv_every">every</string>
 
+    <string name="menu_new_sentinel">NEW SENTINEL</string>
+
+
 
     <string name="tv_descr_time_delay_answer">Time to answer\n
         During this time the guard must to response on application\'s request in a form of blinking screen.He has to touch the screen during this time</string>

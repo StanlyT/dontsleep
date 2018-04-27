@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class BaseActivity extends AppCompatActivity {
     public static final String EXTRA = "extra";
@@ -32,13 +33,20 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
+            case  R.id.quit_main:
+                Toast.makeText(getApplicationContext(),
+                        "pressed R.id.quit_main",
+                        Toast.LENGTH_SHORT)
+                        .show();
+                break;
             case android.R.id.home:
-                // Toast.makeText(getApplicationContext(),
-                //                "pressed R.id.home",
-                //                  Toast.LENGTH_SHORT)
-                //             .show();
+                 Toast.makeText(getApplicationContext(),
+                                "pressed R.id.home",
+                                  Toast.LENGTH_SHORT)
+                             .show();
                 onBackPressed();
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
