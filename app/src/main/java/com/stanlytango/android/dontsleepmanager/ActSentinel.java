@@ -14,8 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelFirebaseCallback;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelStorage;
@@ -120,8 +123,34 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
 
         sentinelStorage = SentinelStorage.get();
 
-        // callback method of SentinelFirebaseCallback interface
-        sentinelStorage.readSentinelsListFromDB(dbRef, this);
+        // if db Sentinel exists then read that
+        // in other case start ActNewSentinel
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    // callback method of SentinelFirebaseCallback interface
+                    sentinelStorage.readSentinelsListFromDB(dbRef, new SentinelFirebaseCallback() {
+                        @Override
+                        public void onCallback(List<Sentinel> lst) {
+                            list.addAll(lst);
+                            Log.d(TAG, "readSentinelsList. List is empty :: "+list.isEmpty());
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    Log.d(TAG, "DataBase "+ DBSentintelName + " doesn't exist");
+                    Intent intent = new Intent ();
+                    intent = ActNewSentinel.newIntent(getApplicationContext(),
+                            ActNewSentinel.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG,"onCancelled :: "+databaseError.getMessage());
+            }
+        });
 
         mRecyclerView.setAdapter(adapter);  // Log.d(TAG, "!!!! list empty :: "+list.isEmpty());
     }

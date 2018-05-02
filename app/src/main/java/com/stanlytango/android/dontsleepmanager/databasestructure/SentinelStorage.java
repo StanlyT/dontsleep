@@ -37,8 +37,6 @@ public class SentinelStorage {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // if database Sentinels exists then
-                if (dataSnapshot.exists()){
                     // fetch database of Sentinels in Map view
                     GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>(){};
                     Map<String, Object> sentinelsMap = dataSnapshot.getValue(t);
@@ -47,11 +45,6 @@ public class SentinelStorage {
                         sentinelsList.add(sentinel.mapToSentinel((Map)entry.getValue()));
                     }
                     firebaseCallback.onCallback(sentinelsList);
-
-                } else {
-                    Log.d(TAG, "DB Sentinels doesn't exist");
-                }
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
