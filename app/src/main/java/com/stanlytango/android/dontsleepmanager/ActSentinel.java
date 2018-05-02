@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
     public static final String EXTRA = "extra";
     private static final String TAG = "# ActSentinel";
     private static final int MENU_ADD_GUARD = 123;
+    private static final int REQUEST_CODE = 11;
 
     RecyclerView mRecyclerView;
     SentinelViewAdapter adapter;
@@ -43,6 +45,17 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
         i.putExtra(EXTRA, b);
         return i;
     }
+// ready
+    public void updateUI(){
+        //SentinelStorage.get().readSentinelsListFromDB(dbRef, this);
+        Log.d(TAG, "updateUI :: "+SentinelStorage.get().getList().toString());
+        if (adapter == null){
+            SentinelStorage.get().readSentinelsListFromDB(dbRef, this);
+            //sentinelStorage.readSentinelsListFromDB(dbRef, this);
+        }
+
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,9 +68,12 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.new_sentinel:
-                startActivity(ActNewSentinel.newIntent(getApplicationContext(),
-                              ActNewSentinel.class, true));
-
+//                startActivity(ActNewSentinel.newIntent(getApplicationContext(),
+//                              ActNewSentinel.class, true));
+                Intent intent = new Intent ();
+                intent = ActNewSentinel.newIntent(getApplicationContext(),
+                        ActNewSentinel.class);
+                startActivityForResult(intent, REQUEST_CODE);
                 break;
             case R.id.quit_main:
                 break;
@@ -65,11 +81,31 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != AppCompatActivity.RESULT_OK)
+            return;
+        if (REQUEST_CODE == requestCode){
+            if (data == null){
+                Log.d(TAG, "onActivityResult: Intent data EQUALS null");
+                return;
+            }
+        }
+    }
+
     // method implementation of SentinelFirebaseCallback
     @Override
     public void onCallback(List<Sentinel> lst) {
         list.addAll(lst);
-        adapter.notifyDataSetChanged();// Log.d(TAG, "INSIDE onCallback list empty :: "+list.isEmpty());
+        Log.d(TAG, "  !!! onCallback list empty :: "+list.isEmpty());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() call :: "+SentinelStorage.get().getList().toString());
+        updateUI();
     }
 
     @Override
@@ -80,6 +116,7 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new SentinelViewAdapter(list);
+        Log.d(TAG, "onCreate() list :: "+list.toString());
 
         sentinelStorage = SentinelStorage.get();
 
@@ -123,7 +160,7 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
         public SentinelViewHolder onCreateViewHolder(ViewGroup container, int viewType){
             View view = LayoutInflater.from(container.getContext())
                     .inflate(R.layout.item_of_sentinel_table, container,false);
-            //Log.d("onCreateViewHlder "," container = "+container.getClass().toString());
+            //Log.d("onCreateVH "," container = "+container.getClass().toString());
             SentinelViewHolder vh = new SentinelViewHolder(view);
             return vh;
         }

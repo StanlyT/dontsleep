@@ -56,9 +56,4 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_password" />
     </android.support.design.widget.TextInputLayout>
-
-
-
-
-
 </LinearLayout>

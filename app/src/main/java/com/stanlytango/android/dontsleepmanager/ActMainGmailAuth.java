@@ -221,7 +221,7 @@ public class ActMainGmailAuth extends BaseActivity
                 Sentinel sentinel = new Sentinel();
 
                 // допустим у нас есть база данных Sentinel
-                sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
+                //sentinel.letsSayThereIsSentinelDB(dbSentinelRef);
 
             }
         });

@@ -33,23 +33,32 @@ public class SentinelStorage {
 
     public void readSentinelsListFromDB(DatabaseReference dbRef, final SentinelFirebaseCallback firebaseCallback){
         final Sentinel sentinel = new Sentinel();
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>(){};
-                Map<String, Object> sentinelsMap = dataSnapshot.getValue(t);
-                for (Map.Entry<String,Object> entry : sentinelsMap.entrySet()){
-                    sentinelsList.add(sentinel.mapToSentinel((Map)entry.getValue()));
+                // if database Sentinels exists then
+                if (dataSnapshot.exists()){
+                    // fetch database of Sentinels in Map view
+                    GenericTypeIndicator<Map<String, Object>> t = new GenericTypeIndicator<Map<String, Object>>(){};
+                    Map<String, Object> sentinelsMap = dataSnapshot.getValue(t);
+                    for (Map.Entry<String,Object> entry : sentinelsMap.entrySet()){
+                        // convert that fetched Map and add that one to sentinelsList
+                        sentinelsList.add(sentinel.mapToSentinel((Map)entry.getValue()));
+                    }
+                    firebaseCallback.onCallback(sentinelsList);
+
+                } else {
+                    Log.d(TAG, "DB Sentinels doesn't exist");
                 }
-                firebaseCallback.onCallback(sentinelsList);
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG,databaseError.getMessage());
+                Log.d(TAG,"onCancelled :: "+databaseError.getMessage());
             }
         };
         dbRef.addListenerForSingleValueEvent(valueEventListener);
-        //return sentinelsList;
     }
 }
 
