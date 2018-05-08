@@ -16,8 +16,10 @@ import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
 
 public class ActNewSentinel extends AppCompatActivity {
     public static final String EXTRA = "extra";
+    public static final String EXTRA_NEW_SENTINEL = "new_sentinel";
     private static final String TAG = "# ActSentinel";
     private static final int MENU_ADD_GUARD = 123;
+
 
     private EditText edtName, edtSurname, edtLogin, edtPassword;
 
@@ -48,9 +50,14 @@ public class ActNewSentinel extends AppCompatActivity {
                 strLogin = edtLogin.getText().toString();
                 strPassword = edtPassword.getText().toString();
 
-                new Sentinel().writeNewSentinel(FirebaseDatabase.getInstance().getReference(ActMainGmailAuth.DBSentintelNm),//ActMainGmailAuth.DBSentintelNm
+                Sentinel sentinel = new Sentinel().writeNewSentinel(FirebaseDatabase.getInstance().getReference(ActMainGmailAuth.DBSentintelNm),
                                                 strLogin, strPassword, strName, strSurname, Long.valueOf(1));
-                setResult(RESULT_OK);
+
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(EXTRA_NEW_SENTINEL, sentinel);
+                intent.putExtras(bundle);
+                setResult(RESULT_OK, intent);
                 finish();
                 return true;
         }
@@ -66,9 +73,5 @@ public class ActNewSentinel extends AppCompatActivity {
         edtSurname = (EditText)findViewById(R.id.surname);
         edtLogin = (EditText)findViewById(R.id.login);
         edtPassword = (EditText)findViewById(R.id.password);
-
-
-
-
     }
 }

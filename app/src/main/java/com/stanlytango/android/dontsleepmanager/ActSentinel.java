@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelFirebaseCallback;
 import com.stanlytango.android.dontsleepmanager.databasestructure.Sentinel;
@@ -25,6 +26,7 @@ import com.stanlytango.android.dontsleepmanager.databasestructure.SentinelStorag
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCallback {
@@ -51,12 +53,13 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
 // ready
     public void updateUI(){
         //SentinelStorage.get().readSentinelsListFromDB(dbRef, this);
-        Log.d(TAG, "updateUI :: "+SentinelStorage.get().getList().toString());
+        Log.d(TAG, "updateUI() call List "+(list.isEmpty()?"is empty":"is NOT empty"));
         if (adapter == null){
-            SentinelStorage.get().readSentinelsListFromDB(dbRef, this);
+            SentinelStorage.get().readSentinelsListFromDB(this);
+
             //sentinelStorage.readSentinelsListFromDB(dbRef, this);
         }
-
+        //sentinelStorage.readSentinelsListFromDB(dbRef, this);
         adapter.notifyDataSetChanged();
     }
 
@@ -84,31 +87,26 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != AppCompatActivity.RESULT_OK)
-            return;
-        if (REQUEST_CODE == requestCode){
-            if (data == null){
-                Log.d(TAG, "onActivityResult: Intent data EQUALS null");
-                return;
-            }
-        }
-    }
 
     // method implementation of SentinelFirebaseCallback
     @Override
     public void onCallback(List<Sentinel> lst) {
+        Log.d(TAG, "  !!! onCallback List "+(list.isEmpty()?"is empty":"is NOT empty"));
+
         list.addAll(lst);
-        Log.d(TAG, "  !!! onCallback list empty :: "+list.isEmpty());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume() call :: "+SentinelStorage.get().getList().toString());
+        //Log.d(TAG, "onResume() List "+(list.isEmpty()?"is empty":"is NOT empty"));
         updateUI();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -119,41 +117,58 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new SentinelViewAdapter(list);
-        Log.d(TAG, "onCreate() list :: "+list.toString());
-
+        Log.d(TAG, "onCreate() List "+(list.isEmpty()?"is empty":"is NOT empty"));
         sentinelStorage = SentinelStorage.get();
-
-        // if db Sentinel exists then read that
-        // in other case start ActNewSentinel
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    // callback method of SentinelFirebaseCallback interface
-                    sentinelStorage.readSentinelsListFromDB(dbRef, new SentinelFirebaseCallback() {
-                        @Override
-                        public void onCallback(List<Sentinel> lst) {
-                            list.addAll(lst);
-                            Log.d(TAG, "readSentinelsList. List is empty :: "+list.isEmpty());
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    Log.d(TAG, "DataBase "+ DBSentintelName + " doesn't exist");
-                    Intent intent = new Intent ();
-                    intent = ActNewSentinel.newIntent(getApplicationContext(),
-                            ActNewSentinel.class);
-                    startActivityForResult(intent, REQUEST_CODE);
+            // if db Sentinel exists then read that
+            // in other case start ActNewSentinel
+            dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        // callback method of SentinelFirebaseCallback interface
+                        sentinelStorage.readSentinelsListFromDB(new SentinelFirebaseCallback() {
+                            @Override
+                            public void onCallback(List<Sentinel> lst) {
+                                list.addAll(lst);
+                                Log.d(TAG, "onCallback II "+(list.isEmpty()?"is empty":"is NOT empty"));
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "DataBase "+ DBSentintelName + " doesn't exist");
+                        Intent intent = new Intent ();
+                        intent = ActNewSentinel.newIntent(getApplicationContext(),
+                                ActNewSentinel.class);
+                        startActivityForResult(intent, REQUEST_CODE);
+                    }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG,"onCancelled :: "+databaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG,"onCancelled :: "+databaseError.getMessage());
+                }
+            });
 
-        mRecyclerView.setAdapter(adapter);  // Log.d(TAG, "!!!! list empty :: "+list.isEmpty());
+        mRecyclerView.setAdapter(adapter);
+        Log.d(TAG, "onCreate setAdapter(adapter) with list which "+(list.isEmpty()?"is empty":"is NOT empty"));
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != AppCompatActivity.RESULT_OK)
+            return;
+        if (REQUEST_CODE == requestCode){
+            if (data == null){
+                Log.d(TAG, "onActivityResult: Intent data EQUALS null");
+                return;
+            }
+
+            Bundle bundle = data.getExtras();
+            list.add((Sentinel)bundle.getSerializable(ActNewSentinel.EXTRA_NEW_SENTINEL));
+            updateUI();
+        }
+    }
+
 
     public class SentinelViewHolder extends RecyclerView.ViewHolder{
         Sentinel sentinel;

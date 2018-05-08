@@ -6,12 +6,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Sentinel {
+public class Sentinel implements Serializable {
     private static final String TAG = "# Sentinel";
 
     public String login;
@@ -52,13 +53,14 @@ public class Sentinel {
         return sentinel;
     }
 
-    public void writeNewSentinel(DatabaseReference dbRef, String login, String password, String name, String surname, Long state){
+    public Sentinel writeNewSentinel(DatabaseReference dbRef, String login, String password, String name, String surname, Long state){
         String key = dbRef.child(login).getKey();
         Sentinel sentinel = new Sentinel(login, password, name, surname, state);
         Map<String,Object> node = sentinel.toMap();
         Map<String,Object> structure = new HashMap<String, Object>();
         structure.put(key, node);
         dbRef.updateChildren(structure);
+        return sentinel;
     }
 
     // !!! ====== testing method ====== !!!

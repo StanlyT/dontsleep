@@ -4,6 +4,7 @@ import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
@@ -31,8 +32,13 @@ public class SentinelStorage {
         return sentinelsList;
     }
 
-    public void readSentinelsListFromDB(DatabaseReference dbRef, final SentinelFirebaseCallback firebaseCallback){
+    public void readSentinelsListFromDB(final SentinelFirebaseCallback firebaseCallback){
+        final String DBSentintelName = "sentinel";
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = mFirebaseDatabase.getReference(DBSentintelName);
+
         final Sentinel sentinel = new Sentinel();
+        Log.d(TAG,"called readSentinelsListFromDB");
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
