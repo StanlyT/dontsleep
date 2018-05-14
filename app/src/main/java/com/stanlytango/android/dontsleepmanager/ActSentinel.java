@@ -165,7 +165,7 @@ public class ActSentinel extends AppCompatActivity implements SentinelFirebaseCa
 
             Bundle bundle = data.getExtras();
             list.add((Sentinel)bundle.getSerializable(ActNewSentinel.EXTRA_NEW_SENTINEL));
-            updateUI();
+            //updateUI();
         }
     }
 
